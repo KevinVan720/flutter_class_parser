@@ -104,6 +104,30 @@ extension TextAlignToJson on TextAlign {
   }
 }
 
+extension MainAxisAlignmentToJson on MainAxisAlignment {
+  String toJson() {
+    return this.toString().stripFirstDot();
+  }
+}
+
+extension CrossAxisAlignmentToJson on CrossAxisAlignment {
+  String toJson() {
+    return this.toString().stripFirstDot();
+  }
+}
+
+extension WrapAlignmentToJson on WrapAlignment {
+  String toJson() {
+    return this.toString().stripFirstDot();
+  }
+}
+
+extension WrapCrossAlignmentToJson on WrapCrossAlignment {
+  String toJson() {
+    return this.toString().stripFirstDot();
+  }
+}
+
 extension GradientToJsonExtension on Gradient {
   String toJson() {
     var rst = {};

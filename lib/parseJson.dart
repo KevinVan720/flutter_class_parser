@@ -12,7 +12,7 @@ extension stringParsingExtension on String {
 }
 
 Color? parseColor(String? string) {
-  if (string==null) return null;
+  if (string == null) return null;
   int colorInt = int.parse(string, radix: 16);
   return Color(colorInt);
 }
@@ -97,7 +97,6 @@ TileMode? parseTileMode(String? string) {
 }
 
 Alignment? parseAlignment(String? string) {
-
   Alignment? alignment;
   switch (string) {
     case 'topLeft':
@@ -130,9 +129,10 @@ Alignment? parseAlignment(String? string) {
 
     default:
       {
-        if(string!=null) {
-          List<String> aligns =
-          string.substring(string.indexOf("("), string.indexOf(")")).split(",");
+        if (string != null) {
+          List<String> aligns = string
+              .substring(string.indexOf("("), string.indexOf(")"))
+              .split(",");
           alignment =
               Alignment(double.parse(aligns[0]), double.parse(aligns[1]));
         }
@@ -207,7 +207,6 @@ StackFit? parseStackFit(String? string) {
 }
 
 Axis? parseAxis(String? string) {
-
   switch (string) {
     case "horizontal":
       return Axis.horizontal;
@@ -233,7 +232,6 @@ TextDecoration? parseTextDecoration(String? string) {
 }
 
 TextDecorationStyle? parseTextDecorationStyle(String? string) {
-
   switch (string) {
     case "solid":
       return TextDecorationStyle.solid;
@@ -251,7 +249,6 @@ TextDecorationStyle? parseTextDecorationStyle(String? string) {
 }
 
 Clip? parseClipBehavior(String? string) {
-
   switch (string) {
     case "antiAlias":
       return Clip.antiAlias;
@@ -267,7 +264,6 @@ Clip? parseClipBehavior(String? string) {
 }
 
 Curve? parseCurve(String? string) {
-
   switch (string) {
     case "linear":
       return Curves.linear;
@@ -325,8 +321,7 @@ TextDirection? parseTextDirection(String? string) {
 
 EdgeInsetsGeometry? parseEdgeInsetsGeometry(String? string) {
   //left,top,right,bottom
-  if (string == null ||
-      string.trim() == '') {
+  if (string == null || string.trim() == '') {
     return null;
   }
   var values = string.split(",");
@@ -338,7 +333,7 @@ EdgeInsetsGeometry? parseEdgeInsetsGeometry(String? string) {
 }
 
 CrossAxisAlignment? parseCrossAxisAlignment(String? crossAxisAlignmentString) {
-  if(crossAxisAlignmentString==null) return null;
+  if (crossAxisAlignmentString == null) return null;
   //crossAxisAlignmentString = crossAxisAlignmentString.substring(18);
 
   switch (crossAxisAlignmentString) {
@@ -357,7 +352,7 @@ CrossAxisAlignment? parseCrossAxisAlignment(String? crossAxisAlignmentString) {
 }
 
 MainAxisAlignment? parseMainAxisAlignment(String? mainAxisAlignmentString) {
-  if(mainAxisAlignmentString==null) return null;
+  if (mainAxisAlignmentString == null) return null;
   //mainAxisAlignmentString = mainAxisAlignmentString.substring(17);
 
   switch (mainAxisAlignmentString) {
@@ -378,7 +373,7 @@ MainAxisAlignment? parseMainAxisAlignment(String? mainAxisAlignmentString) {
 }
 
 WrapAlignment? parseWrapAlignment(String? wrapAlignmentString) {
-  if(wrapAlignmentString ==null) return null;
+  if (wrapAlignmentString == null) return null;
   //wrapAlignmentString = wrapAlignmentString.substring(14);
 
   switch (wrapAlignmentString) {
@@ -399,7 +394,7 @@ WrapAlignment? parseWrapAlignment(String? wrapAlignmentString) {
 }
 
 WrapCrossAlignment? parseWrapCrossAlignment(String? wrapCrossAlignmentString) {
-  if(wrapCrossAlignmentString ==null) return null;
+  if (wrapCrossAlignmentString == null) return null;
 
   //wrapCrossAlignmentString = wrapCrossAlignmentString.substring(19);
 
@@ -415,8 +410,8 @@ WrapCrossAlignment? parseWrapCrossAlignment(String? wrapCrossAlignmentString) {
 }
 
 TextAlign? parseTextAlign(String? string) {
-  if(string ==null) return null;
-  switch(string) {
+  if (string == null) return null;
+  switch (string) {
     case 'left':
       return TextAlign.left;
     case 'right':
@@ -449,32 +444,35 @@ VerticalDirection? parseVerticalDirection(String? verticalDirectionString) =>
 
 //Up till this point all parsing should be 1 level. Directly parsing a string.
 
-ColorFilter? parseColorFilter(Map<String, dynamic> map) {
+ColorFilter? parseColorFilter(Map<String, dynamic>? map) {
+  if (map == null) return null;
   Color color = parseColor(map["color"]) ?? Colors.white;
   BlendMode mode = parseBlendMode(map["mode"]) ?? BlendMode.clear;
   return ColorFilter.mode(color, mode);
 }
 
-DecorationImage? parseDecorationImage(Map<String, dynamic> map) {
+DecorationImage? parseDecorationImage(Map<String, dynamic>? map) {
+  if (map == null) return null;
   String url = map["url"];
   ColorFilter? colorFilter = parseColorFilter(map["colorFilter"]);
   BoxFit? fit = parseBoxFit(map["fit"]);
-  Alignment alignment = parseAlignment(map["alignment"])??Alignment.topLeft;
+  Alignment alignment = parseAlignment(map["alignment"]) ?? Alignment.topLeft;
   return DecorationImage(
       image: NetworkImage(url),
       fit: fit,
       alignment: alignment,
-      colorFilter: colorFilter
-  );
+      colorFilter: colorFilter);
 }
 
-Gradient? parseGradient(Map<String, dynamic> map) {
-  List<Color> colors =
-  (map["colors"] as List).map((e) => parseColor(e)??Colors.white).toList();
+Gradient? parseGradient(Map<String, dynamic>? map) {
+  if (map == null) return null;
+  List<Color> colors = (map["colors"] as List)
+      .map((e) => parseColor(e) ?? Colors.white)
+      .toList();
   List<double>? stops = map["stops"]?.cast<double>();
-  TileMode tileMode = parseTileMode(map["tileMode"])??TileMode.clamp;
+  TileMode tileMode = parseTileMode(map["tileMode"]) ?? TileMode.clamp;
   if (map.containsKey("radius")) {
-    Alignment center = parseAlignment(map["center"])??Alignment.center;
+    Alignment center = parseAlignment(map["center"]) ?? Alignment.center;
     double radius = map["radius"];
     return RadialGradient(
         center: center,
@@ -483,7 +481,7 @@ Gradient? parseGradient(Map<String, dynamic> map) {
         stops: stops,
         tileMode: tileMode);
   } else if (map.containsKey("startAngle")) {
-    Alignment center = parseAlignment(map["center"])??Alignment.center;
+    Alignment center = parseAlignment(map["center"]) ?? Alignment.center;
     double startAngle = map["startAngle"];
     double endAngle = map["endAngle"];
     return SweepGradient(
@@ -494,8 +492,8 @@ Gradient? parseGradient(Map<String, dynamic> map) {
         stops: stops,
         tileMode: tileMode);
   } else {
-    Alignment begin = parseAlignment(map["begin"])??Alignment.centerLeft;
-    Alignment end = parseAlignment(map["end"])??Alignment.centerRight;
+    Alignment begin = parseAlignment(map["begin"]) ?? Alignment.centerLeft;
+    Alignment end = parseAlignment(map["end"]) ?? Alignment.centerRight;
     return LinearGradient(
         begin: begin,
         end: end,
@@ -505,29 +503,29 @@ Gradient? parseGradient(Map<String, dynamic> map) {
   }
 }
 
-BoxDecoration? parseBoxDecoration(Map<String, dynamic> map) {
+BoxDecoration? parseBoxDecoration(Map<String, dynamic>? map) {
+  if (map == null) return null;
   Color? color = parseColor(map["color"]);
   Gradient? gradient = parseGradient(map["gradient"]);
   DecorationImage? image = parseDecorationImage(map["image"]);
   return BoxDecoration(color: color, gradient: gradient, image: image);
 }
 
-TextStyle? parseTextStyle(Map<String, dynamic> map) {
+TextStyle? parseTextStyle(Map<String, dynamic>? map) {
+  if (map == null) return null;
   //TODO: more properties need to be implemented, such as decoration, decorationColor, decorationStyle, wordSpacing and so on.
   Color? color = parseColor(map['color']);
   Color? backgroundColor = parseColor(map['backgroundColor']);
   String? fontFamily = map['fontFamily'];
   //double fontSize = map['fontSize'];
-  FontStyle? fontStyle = 'italic' == map['fontStyle']
-      ? FontStyle.italic
-      : FontStyle.normal;
-  FontWeight? fontWeight = 'w700' == map['fontWeight']
-      ? FontWeight.bold
-      : FontWeight.normal;
+  FontStyle? fontStyle =
+      'italic' == map['fontStyle'] ? FontStyle.italic : FontStyle.normal;
+  FontWeight? fontWeight =
+      'w700' == map['fontWeight'] ? FontWeight.bold : FontWeight.normal;
   TextDecoration? decoration = parseTextDecoration(map['decoration']);
   Color? decorationColor = parseColor(map["decorationColor"]);
   TextDecorationStyle? decorationStyle =
-  parseTextDecorationStyle(map['decorationStyle']);
+      parseTextDecorationStyle(map['decorationStyle']);
   double? decorationThickness = map['decorationThickness'];
   double? height = map['height'];
   double? letterSpacing = map['letterSpacing'];

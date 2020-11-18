@@ -321,6 +321,110 @@ TextDirection? parseTextDirection(String? string) {
   return textDirection;
 }
 
+EdgeInsetsGeometry? parseEdgeInsetsGeometry(String? string) {
+  //left,top,right,bottom
+  if (string == null ||
+      string.trim() == '') {
+    return null;
+  }
+  var values = string.split(",");
+  return EdgeInsets.only(
+      left: double.parse(values[0]),
+      top: double.parse(values[1]),
+      right: double.parse(values[2]),
+      bottom: double.parse(values[3]));
+}
+
+CrossAxisAlignment? parseCrossAxisAlignment(String? crossAxisAlignmentString) {
+  if(crossAxisAlignmentString==null) return null;
+  //crossAxisAlignmentString = crossAxisAlignmentString.substring(18);
+
+  switch (crossAxisAlignmentString) {
+    case 'start':
+      return CrossAxisAlignment.start;
+    case 'end':
+      return CrossAxisAlignment.end;
+    case 'center':
+      return CrossAxisAlignment.center;
+    case 'stretch':
+      return CrossAxisAlignment.stretch;
+    case 'baseline':
+      return CrossAxisAlignment.baseline;
+  }
+  return CrossAxisAlignment.center;
+}
+
+MainAxisAlignment? parseMainAxisAlignment(String? mainAxisAlignmentString) {
+  if(mainAxisAlignmentString==null) return null;
+  //mainAxisAlignmentString = mainAxisAlignmentString.substring(17);
+
+  switch (mainAxisAlignmentString) {
+    case 'start':
+      return MainAxisAlignment.start;
+    case 'end':
+      return MainAxisAlignment.end;
+    case 'center':
+      return MainAxisAlignment.center;
+    case 'spaceBetween':
+      return MainAxisAlignment.spaceBetween;
+    case 'spaceAround':
+      return MainAxisAlignment.spaceAround;
+    case 'spaceEvenly':
+      return MainAxisAlignment.spaceEvenly;
+  }
+  return MainAxisAlignment.start;
+}
+
+WrapAlignment? parseWrapAlignment(String? wrapAlignmentString) {
+  if(wrapAlignmentString ==null) return null;
+  //wrapAlignmentString = wrapAlignmentString.substring(14);
+
+  switch (wrapAlignmentString) {
+    case 'start':
+      return WrapAlignment.start;
+    case 'end':
+      return WrapAlignment.end;
+    case 'center':
+      return WrapAlignment.center;
+    case 'spaceBetween':
+      return WrapAlignment.spaceBetween;
+    case 'spaceAround':
+      return WrapAlignment.spaceAround;
+    case 'spaceEvenly':
+      return WrapAlignment.spaceEvenly;
+  }
+  return WrapAlignment.start;
+}
+
+WrapCrossAlignment? parseWrapCrossAlignment(String? wrapCrossAlignmentString) {
+  if(wrapCrossAlignmentString ==null) return null;
+
+  //wrapCrossAlignmentString = wrapCrossAlignmentString.substring(19);
+
+  switch (wrapCrossAlignmentString) {
+    case 'start':
+      return WrapCrossAlignment.start;
+    case 'end':
+      return WrapCrossAlignment.end;
+    case 'center':
+      return WrapCrossAlignment.center;
+  }
+  return WrapCrossAlignment.start;
+}
+
+MainAxisSize? parseMainAxisSize(String? mainAxisSizeString) =>
+    mainAxisSizeString == 'min' ? MainAxisSize.min : MainAxisSize.max;
+
+TextBaseline? parseTextBaseline(String? parseTextBaselineString) =>
+    'alphabetic' == parseTextBaselineString
+        ? TextBaseline.alphabetic
+        : TextBaseline.ideographic;
+
+VerticalDirection? parseVerticalDirection(String? verticalDirectionString) =>
+    'up' == verticalDirectionString
+        ? VerticalDirection.up
+        : VerticalDirection.down;
+
 ColorFilter? parseColorFilter(String? string) {
   if(string==null) return null;
   var map = json.decode(string);

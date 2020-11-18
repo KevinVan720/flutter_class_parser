@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_class_parser/toJson.dart';
 import 'dart:convert';
-import 'package:flutter_class_parser/StringParsing.dart';
+import 'package:flutter_class_parser/parseJson.dart';
 
 void main() {
 

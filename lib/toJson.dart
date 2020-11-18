@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:flutter_class_parser/StringParsing.dart';
+import 'package:flutter_class_parser/parseJson.dart';
 
 extension MapExtension<K, V> on Map<K, V> {
   void updateNotNull(K key, V value) {
@@ -129,8 +129,8 @@ extension WrapCrossAlignmentToJson on WrapCrossAlignment {
 }
 
 extension GradientToJsonExtension on Gradient {
-  String toJson() {
-    var rst = {};
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic>  rst = {};
     rst.updateNotNull("stops", this.stops);
     rst.updateNotNull("colors", this.colors.map((e) => e.toJson()).toList());
     if (this is LinearGradient) {
@@ -155,13 +155,13 @@ extension GradientToJsonExtension on Gradient {
           (this as SweepGradient).tileMode.toJson());
     }
 
-    return json.encode(rst);
+    return rst;
   }
 }
 
 extension ColorFilterToJsonExtension on ColorFilter {
-  String toJson() {
-    var rst = {};
+  Map<String, dynamic>  toJson() {
+    Map<String, dynamic>  rst = {};
     String temp = this.toString();
     //assume color filter is in mode type
     List<String> filtermode =
@@ -171,34 +171,34 @@ extension ColorFilterToJsonExtension on ColorFilter {
         colorString.lastIndexOf("(0x") + 3, colorString.indexOf(")"));
     rst["color"] = colorString;
     rst["mode"] = filtermode[1].stripFirstDot();
-    return json.encode(rst);
+    return rst;
   }
 }
 
 extension DecorationImageToJsonExtension on DecorationImage {
-  String toJson() {
-    var rst = {};
+  Map<String, dynamic>  toJson() {
+    Map<String, dynamic>  rst = {};
     rst.updateNotNull("fit", this.fit?.toJson());
     rst.updateNotNull("alignment", this.alignment.toJson());
     rst.updateNotNull("colorFilter", this.colorFilter?.toJson());
     rst.updateNotNull("url", (this.image as NetworkImage).url);
-    return json.encode(rst);
+    return rst;
   }
 }
 
 extension BoxDecorationToJsonExtension on BoxDecoration {
-  String toJson() {
-    var rst = {};
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> rst = {};
     rst.updateNotNull("color", this.color?.toJson());
     rst.updateNotNull("gradient", this.gradient?.toJson());
     rst.updateNotNull("image", this.image?.toJson());
-    return json.encode(rst);
+    return rst;
   }
 }
 
 extension TextStyleToJsonExtension on TextStyle {
-  String toJson() {
-    var rst = {};
+  Map<String, dynamic>  toJson() {
+    Map<String, dynamic>  rst = {};
     rst.updateNotNull("fontFamily", this.fontFamily);
     rst.updateNotNull("color", this.color?.toJson());
     rst.updateNotNull("backgroundColor", this.backgroundColor?.toJson());
@@ -211,6 +211,6 @@ extension TextStyleToJsonExtension on TextStyle {
     rst.updateNotNull("decorationThickness", this.decorationThickness);
     rst.updateNotNull("height", this.height);
     rst.updateNotNull("letterSpacing", this.letterSpacing);
-    return json.encode(rst);
+    return rst;
   }
 }

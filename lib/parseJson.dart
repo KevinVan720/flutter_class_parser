@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
 
+//I can make parsing be extension methods on String and Map<String, dynamic>, but that would require
+
 extension stringParsingExtension on String {
   String stripFirstDot() {
     int index = this.indexOf('.') + 1;
@@ -445,17 +447,15 @@ VerticalDirection? parseVerticalDirection(String? verticalDirectionString) =>
         ? VerticalDirection.up
         : VerticalDirection.down;
 
-ColorFilter? parseColorFilter(String? string) {
-  if(string==null) return null;
-  var map = json.decode(string);
+//Up till this point all parsing should be 1 level. Directly parsing a string.
+
+ColorFilter? parseColorFilter(Map<String, dynamic> map) {
   Color color = parseColor(map["color"]) ?? Colors.white;
   BlendMode mode = parseBlendMode(map["mode"]) ?? BlendMode.clear;
   return ColorFilter.mode(color, mode);
 }
 
-DecorationImage? parseDecorationImage(String? string) {
-  if(string==null) return null;
-  var map = json.decode(string);
+DecorationImage? parseDecorationImage(Map<String, dynamic> map) {
   String url = map["url"];
   ColorFilter? colorFilter = parseColorFilter(map["colorFilter"]);
   BoxFit? fit = parseBoxFit(map["fit"]);
@@ -468,9 +468,7 @@ DecorationImage? parseDecorationImage(String? string) {
   );
 }
 
-Gradient? parseGradient(String? string) {
-  if(string==null) return null;
-  var map = json.decode(string);
+Gradient? parseGradient(Map<String, dynamic> map) {
   List<Color> colors =
   (map["colors"] as List).map((e) => parseColor(e)??Colors.white).toList();
   List<double>? stops = map["stops"]?.cast<double>();
@@ -507,18 +505,14 @@ Gradient? parseGradient(String? string) {
   }
 }
 
-BoxDecoration? parseBoxDecoration(String? string) {
-  if(string==null) return null;
-  var map = json.decode(string);
+BoxDecoration? parseBoxDecoration(Map<String, dynamic> map) {
   Color? color = parseColor(map["color"]);
   Gradient? gradient = parseGradient(map["gradient"]);
   DecorationImage? image = parseDecorationImage(map["image"]);
   return BoxDecoration(color: color, gradient: gradient, image: image);
 }
 
-TextStyle? parseTextStyle(String? string) {
-  if(string==null) return null;
-  var map = json.decode(string);
+TextStyle? parseTextStyle(Map<String, dynamic> map) {
   //TODO: more properties need to be implemented, such as decoration, decorationColor, decorationStyle, wordSpacing and so on.
   Color? color = parseColor(map['color']);
   Color? backgroundColor = parseColor(map['backgroundColor']);

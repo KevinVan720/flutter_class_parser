@@ -22,7 +22,7 @@ void main() {
           )).toJson();
       user["textStyle"]=TextStyle(fontWeight: FontWeight.bold, color: Colors.black12, letterSpacing: 12).toJson();
       String str = json.encode(user);
-      //print(str);
+      debugPrint(str);
       var res=json.decode(str);
       expect(parseTextStyle(res["textStyle"]).toString(), "TextStyle(inherit: true, color: Color(0x1f000000), weight: 700, style: normal, letterSpacing: 12.0)");
       expect(parseBoxDecoration(res["boxDecoration"]).toString(),

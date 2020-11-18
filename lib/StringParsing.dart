@@ -7,345 +7,425 @@ extension stringParsingExtension on String {
     index = index == 0 ? 0 : index;
     return this.substring(index);
   }
+}
 
-  Color parseColor() {
-    int colorInt = int.parse(this, radix: 16);
-    return Color(colorInt);
+Color? parseColor(String? string) {
+  if (string==null) return null;
+  int colorInt = int.parse(string, radix: 16);
+  return Color(colorInt);
+}
+
+BlendMode? parseBlendMode(String? string) {
+  switch (string?.trim()) {
+    case 'clear':
+      return BlendMode.clear;
+    case 'src':
+      return BlendMode.src;
+    case 'dst':
+      return BlendMode.dst;
+    case 'srcOver':
+      return BlendMode.srcOver;
+    case 'dstOver':
+      return BlendMode.dstOver;
+    case 'srcIn':
+      return BlendMode.srcIn;
+    case 'dstIn':
+      return BlendMode.dstIn;
+    case 'srcOut':
+      return BlendMode.srcOut;
+    case 'dstOut':
+      return BlendMode.dstOut;
+    case 'srcATop':
+      return BlendMode.srcATop;
+    case 'dstATop':
+      return BlendMode.dstATop;
+    case 'xor':
+      return BlendMode.xor;
+    case 'plus':
+      return BlendMode.plus;
+    case 'modulate':
+      return BlendMode.modulate;
+    case 'screen':
+      return BlendMode.screen;
+    case 'overlay':
+      return BlendMode.overlay;
+    case 'darken':
+      return BlendMode.darken;
+    case 'lighten':
+      return BlendMode.lighten;
+    case 'colorDodge':
+      return BlendMode.colorDodge;
+    case 'colorBurn':
+      return BlendMode.colorBurn;
+    case 'hardLight':
+      return BlendMode.hardLight;
+    case 'softLight':
+      return BlendMode.softLight;
+    case 'difference':
+      return BlendMode.difference;
+    case 'exclusion':
+      return BlendMode.exclusion;
+    case 'multiply':
+      return BlendMode.multiply;
+    case 'hue':
+      return BlendMode.hue;
+    case 'saturation':
+      return BlendMode.saturation;
+    case 'color':
+      return BlendMode.color;
+    case 'luminosity':
+      return BlendMode.luminosity;
+
+    default:
+      return null;
   }
+}
 
-  BlendMode parseBlendMode() {
-    switch (this.trim()) {
-      case 'clear':
-        return BlendMode.clear;
-      case 'src':
-        return BlendMode.src;
-      case 'dst':
-        return BlendMode.dst;
-      case 'srcOver':
-        return BlendMode.srcOver;
-      case 'dstOver':
-        return BlendMode.dstOver;
-      case 'srcIn':
-        return BlendMode.srcIn;
-      case 'dstIn':
-        return BlendMode.dstIn;
-      case 'srcOut':
-        return BlendMode.srcOut;
-      case 'dstOut':
-        return BlendMode.dstOut;
-      case 'srcATop':
-        return BlendMode.srcATop;
-      case 'dstATop':
-        return BlendMode.dstATop;
-      case 'xor':
-        return BlendMode.xor;
-      case 'plus':
-        return BlendMode.plus;
-      case 'modulate':
-        return BlendMode.modulate;
-      case 'screen':
-        return BlendMode.screen;
-      case 'overlay':
-        return BlendMode.overlay;
-      case 'darken':
-        return BlendMode.darken;
-      case 'lighten':
-        return BlendMode.lighten;
-      case 'colorDodge':
-        return BlendMode.colorDodge;
-      case 'colorBurn':
-        return BlendMode.colorBurn;
-      case 'hardLight':
-        return BlendMode.hardLight;
-      case 'softLight':
-        return BlendMode.softLight;
-      case 'difference':
-        return BlendMode.difference;
-      case 'exclusion':
-        return BlendMode.exclusion;
-      case 'multiply':
-        return BlendMode.multiply;
-      case 'hue':
-        return BlendMode.hue;
-      case 'saturation':
-        return BlendMode.saturation;
-      case 'color':
-        return BlendMode.color;
-      case 'luminosity':
-        return BlendMode.luminosity;
-
-      default:
-        return BlendMode.srcIn;
-    }
+TileMode? parseTileMode(String? string) {
+  switch (string) {
+    case "clamp":
+      return TileMode.clamp;
+    case "mirror":
+      return TileMode.mirror;
+    case "repeated":
+      return TileMode.repeated;
+    default:
+      return null;
   }
+}
 
-  TileMode parseTileMode() {
-    switch (this) {
-      case "clamp":
-        return TileMode.clamp;
-      case "mirror":
-        return TileMode.mirror;
-      case "repeated":
-        return TileMode.repeated;
-    }
-    return TileMode.clamp;
-  }
+Alignment? parseAlignment(String? string) {
 
-  Alignment parseAlignment() {
+  Alignment? alignment;
+  switch (string) {
+    case 'topLeft':
+      alignment = Alignment.topLeft;
+      break;
+    case 'topCenter':
+      alignment = Alignment.topCenter;
+      break;
+    case 'topRight':
+      alignment = Alignment.topRight;
+      break;
+    case 'centerLeft':
+      alignment = Alignment.centerLeft;
+      break;
+    case 'center':
+      alignment = Alignment.center;
+      break;
+    case 'centerRight':
+      alignment = Alignment.centerRight;
+      break;
+    case 'bottomLeft':
+      alignment = Alignment.bottomLeft;
+      break;
+    case 'bottomCenter':
+      alignment = Alignment.bottomCenter;
+      break;
+    case 'bottomRight':
+      alignment = Alignment.bottomRight;
+      break;
 
-    Alignment alignment = Alignment.topLeft;
-    switch (this) {
-      case 'topLeft':
-        alignment = Alignment.topLeft;
-        break;
-      case 'topCenter':
-        alignment = Alignment.topCenter;
-        break;
-      case 'topRight':
-        alignment = Alignment.topRight;
-        break;
-      case 'centerLeft':
-        alignment = Alignment.centerLeft;
-        break;
-      case 'center':
-        alignment = Alignment.center;
-        break;
-      case 'centerRight':
-        alignment = Alignment.centerRight;
-        break;
-      case 'bottomLeft':
-        alignment = Alignment.bottomLeft;
-        break;
-      case 'bottomCenter':
-        alignment = Alignment.bottomCenter;
-        break;
-      case 'bottomRight':
-        alignment = Alignment.bottomRight;
-        break;
-
-      default:
-        {
+    default:
+      {
+        if(string!=null) {
           List<String> aligns =
-          this.substring(this.indexOf("("), this.indexOf(")")).split(",");
+          string.substring(string.indexOf("("), string.indexOf(")")).split(",");
           alignment =
               Alignment(double.parse(aligns[0]), double.parse(aligns[1]));
         }
-        break;
-    }
-    return alignment;
+      }
+      break;
   }
+  return alignment;
+}
 
-  BoxFit parseBoxFit() {
-    switch (this) {
-      case 'fill':
-        return BoxFit.fill;
-      case 'contain':
-        return BoxFit.contain;
-      case 'cover':
-        return BoxFit.cover;
-      case 'fitWidth':
-        return BoxFit.fitWidth;
-      case 'fitHeight':
-        return BoxFit.fitHeight;
-      case 'none':
-        return BoxFit.none;
-      case 'scaleDown':
-        return BoxFit.scaleDown;
-    }
-    return BoxFit.fill;
+BoxFit? parseBoxFit(String? string) {
+  switch (string) {
+    case 'fill':
+      return BoxFit.fill;
+    case 'contain':
+      return BoxFit.contain;
+    case 'cover':
+      return BoxFit.cover;
+    case 'fitWidth':
+      return BoxFit.fitWidth;
+    case 'fitHeight':
+      return BoxFit.fitHeight;
+    case 'none':
+      return BoxFit.none;
+    case 'scaleDown':
+      return BoxFit.scaleDown;
+    default:
+      return null;
   }
+}
 
-  ImageRepeat parseImageRepeat() {
-    switch (this) {
-      case 'repeat':
-        return ImageRepeat.repeat;
-      case 'repeatX':
-        return ImageRepeat.repeatX;
-      case 'repeatY':
-        return ImageRepeat.repeatY;
-      case 'noRepeat':
-        return ImageRepeat.noRepeat;
-      default:
-        return ImageRepeat.noRepeat;
-    }
+ImageRepeat? parseImageRepeat(String? string) {
+  switch (string) {
+    case 'repeat':
+      return ImageRepeat.repeat;
+    case 'repeatX':
+      return ImageRepeat.repeatX;
+    case 'repeatY':
+      return ImageRepeat.repeatY;
+    case 'noRepeat':
+      return ImageRepeat.noRepeat;
+    default:
+      return null;
   }
+}
 
-  FilterQuality parseFilterQuality() {
-    switch (this) {
-      case 'none':
-        return FilterQuality.none;
-      case 'low':
-        return FilterQuality.low;
-      case 'medium':
-        return FilterQuality.medium;
-      case 'high':
-        return FilterQuality.high;
-      default:
-        return FilterQuality.low;
-    }
+FilterQuality? parseFilterQuality(String? string) {
+  switch (string) {
+    case 'none':
+      return FilterQuality.none;
+    case 'low':
+      return FilterQuality.low;
+    case 'medium':
+      return FilterQuality.medium;
+    case 'high':
+      return FilterQuality.high;
+    default:
+      return null;
   }
+}
 
-  StackFit parseStackFit() {
-    switch (this) {
-      case 'loose':
-        return StackFit.loose;
-      case 'expand':
-        return StackFit.expand;
-      case 'passthrough':
-        return StackFit.passthrough;
-      default:
-        return StackFit.loose;
-    }
+StackFit? parseStackFit(String? string) {
+  switch (string) {
+    case 'loose':
+      return StackFit.loose;
+    case 'expand':
+      return StackFit.expand;
+    case 'passthrough':
+      return StackFit.passthrough;
+    default:
+      return null;
   }
+}
 
-  Axis parseAxis() {
+Axis? parseAxis(String? string) {
 
-    switch (this) {
-      case "horizontal":
-        return Axis.horizontal;
-      case "vertical":
-        return Axis.vertical;
-    }
-    return Axis.vertical;
+  switch (string) {
+    case "horizontal":
+      return Axis.horizontal;
+    case "vertical":
+      return Axis.vertical;
   }
+  return null;
+}
 
-  TextDecoration parseTextDecoration() {
-    switch (this) {
-      case "none":
-        return TextDecoration.none;
-      case "underline":
-        return TextDecoration.underline;
-      case "lineThrough":
-        return TextDecoration.lineThrough;
-      case "overline":
-        return TextDecoration.overline;
-    }
-    return TextDecoration.none;
+TextDecoration? parseTextDecoration(String? string) {
+  switch (string) {
+    case "none":
+      return TextDecoration.none;
+    case "underline":
+      return TextDecoration.underline;
+    case "lineThrough":
+      return TextDecoration.lineThrough;
+    case "overline":
+      return TextDecoration.overline;
+    default:
+      return null;
   }
+}
 
-  TextDecorationStyle parseTextDecorationStyle() {
+TextDecorationStyle? parseTextDecorationStyle(String? string) {
 
-    switch (this) {
-      case "solid":
-        return TextDecorationStyle.solid;
-      case "double":
-        return TextDecorationStyle.double;
-      case "dotted":
-        return TextDecorationStyle.dotted;
-      case "dashed":
-        return TextDecorationStyle.dashed;
-      case "wavy":
-        return TextDecorationStyle.wavy;
-      default:
-        return TextDecorationStyle.solid;
-    }
+  switch (string) {
+    case "solid":
+      return TextDecorationStyle.solid;
+    case "double":
+      return TextDecorationStyle.double;
+    case "dotted":
+      return TextDecorationStyle.dotted;
+    case "dashed":
+      return TextDecorationStyle.dashed;
+    case "wavy":
+      return TextDecorationStyle.wavy;
+    default:
+      return null;
   }
+}
 
-  Clip parseClipBehavior() {
+Clip? parseClipBehavior(String? string) {
 
-    switch (this) {
-      case "antiAlias":
-        return Clip.antiAlias;
-      case "none":
-        return Clip.none;
-      case "hardEdge":
-        return Clip.hardEdge;
-      case "antiAliasWithSaveLayer":
-        return Clip.antiAliasWithSaveLayer;
-      default:
-        return Clip.antiAlias;
-    }
+  switch (string) {
+    case "antiAlias":
+      return Clip.antiAlias;
+    case "none":
+      return Clip.none;
+    case "hardEdge":
+      return Clip.hardEdge;
+    case "antiAliasWithSaveLayer":
+      return Clip.antiAliasWithSaveLayer;
+    default:
+      return null;
   }
+}
 
-  Curve parseCurve() {
+Curve? parseCurve(String? string) {
 
-    switch (this) {
-      case "linear":
-        return Curves.linear;
-      case "bounceIn":
-        return Curves.bounceIn;
-      case "bounceOut":
-        return Curves.bounceOut;
-      case "decelerate":
-        return Curves.decelerate;
-      case "ease":
-        return Curves.ease;
-      case "easeIn":
-        return Curves.easeIn;
-      case "easeOut":
-        return Curves.easeOut;
-      case "elasticIn":
-        return Curves.elasticIn;
-      case "elasticOut":
-        return Curves.elasticOut;
-    }
-    return Curves.linear;
+  switch (string) {
+    case "linear":
+      return Curves.linear;
+    case "bounceIn":
+      return Curves.bounceIn;
+    case "bounceOut":
+      return Curves.bounceOut;
+    case "decelerate":
+      return Curves.decelerate;
+    case "ease":
+      return Curves.ease;
+    case "easeIn":
+      return Curves.easeIn;
+    case "easeOut":
+      return Curves.easeOut;
+    case "elasticIn":
+      return Curves.elasticIn;
+    case "elasticOut":
+      return Curves.elasticOut;
+    default:
+      return null;
   }
+}
 
-  ColorFilter parseColorFilter() {
-    var map = json.decode(this);
-    Color color = (map["color"] as String).parseColor();
-    BlendMode mode = (map["mode"] as String).parseBlendMode();
-    return ColorFilter.mode(color, mode);
+TextOverflow? parseTextOverflow(String? string) {
+  TextOverflow? textOverflow;
+  switch (string) {
+    case "ellipsis":
+      textOverflow = TextOverflow.ellipsis;
+      break;
+    case "clip":
+      textOverflow = TextOverflow.clip;
+      break;
+    case "fade":
+      textOverflow = TextOverflow.fade;
+      break;
   }
+  return textOverflow;
+}
 
-  DecorationImage parseDecorationImage() {
-    var map = json.decode(this);
-    String url = map["url"];
-    ColorFilter colorFilter = (map["colorFilter"] as String).parseColorFilter();
-    BoxFit fit = (map["fit"] as String).parseBoxFit();
-    Alignment alignment = (map["alignment"] as String).parseAlignment();
-    return DecorationImage(
-        image: NetworkImage(url),
-        fit: fit,
-        alignment: alignment,
-        colorFilter: colorFilter
-    );
+TextDirection? parseTextDirection(String? string) {
+  TextDirection textDirection = TextDirection.ltr;
+  switch (string) {
+    case 'ltr':
+      textDirection = TextDirection.ltr;
+      break;
+    case 'rtl':
+      textDirection = TextDirection.rtl;
+      break;
+    default:
+      textDirection = TextDirection.ltr;
   }
+  return textDirection;
+}
 
-  Gradient parseGradient() {
-    var map = json.decode(this);
-    List<Color> colors =
-    (map["colors"] as List).map((e) => (e as String).parseColor()).toList();
-    List<double> stops = map["stops"]?.cast<double>();
-    TileMode tileMode = (map["tileMode"] as String).parseTileMode();
-    if (map.containsKey("radius")) {
-      Alignment center = (map["center"] as String).parseAlignment();
-      double radius = map["radius"];
-      return RadialGradient(
-          center: center,
-          radius: radius,
-          colors: colors,
-          stops: stops,
-          tileMode: tileMode);
-    } else if (map.containsKey("startAngle")) {
-      Alignment center = (map["center"] as String).parseAlignment();
-      double startAngle = map["startAngle"];
-      double endAngle = map["endAngle"];
-      return SweepGradient(
-          center: center,
-          startAngle: startAngle,
-          endAngle: endAngle,
-          colors: colors,
-          stops: stops,
-          tileMode: tileMode);
-    } else {
-      Alignment begin = (map["begin"] as String).parseAlignment();
-      Alignment end = (map["end"] as String).parseAlignment();
-      return LinearGradient(
-          begin: begin,
-          end: end,
-          colors: colors,
-          stops: stops,
-          tileMode: tileMode);
-    }
-  }
+ColorFilter? parseColorFilter(String? string) {
+  if(string==null) return null;
+  var map = json.decode(string);
+  Color color = parseColor(map["color"]) ?? Colors.white;
+  BlendMode mode = parseBlendMode(map["mode"]) ?? BlendMode.clear;
+  return ColorFilter.mode(color, mode);
+}
 
-  BoxDecoration parseBoxDecoration() {
-    var map = json.decode(this);
-    Color color = (map["color"] as String).parseColor();
-    Gradient gradient = (map["gradient"] as String).parseGradient();
-    DecorationImage image = (map["image"] as String).parseDecorationImage();
-    return BoxDecoration(color: color, gradient: gradient, image: image);
+DecorationImage? parseDecorationImage(String? string) {
+  if(string==null) return null;
+  var map = json.decode(string);
+  String url = map["url"];
+  ColorFilter? colorFilter = parseColorFilter(map["colorFilter"]);
+  BoxFit? fit = parseBoxFit(map["fit"]);
+  Alignment alignment = parseAlignment(map["alignment"])??Alignment.topLeft;
+  return DecorationImage(
+      image: NetworkImage(url),
+      fit: fit,
+      alignment: alignment,
+      colorFilter: colorFilter
+  );
+}
+
+Gradient? parseGradient(String? string) {
+  if(string==null) return null;
+  var map = json.decode(string);
+  List<Color> colors =
+  (map["colors"] as List).map((e) => parseColor(e)??Colors.white).toList();
+  List<double>? stops = map["stops"]?.cast<double>();
+  TileMode tileMode = parseTileMode(map["tileMode"])??TileMode.clamp;
+  if (map.containsKey("radius")) {
+    Alignment center = parseAlignment(map["center"])??Alignment.center;
+    double radius = map["radius"];
+    return RadialGradient(
+        center: center,
+        radius: radius,
+        colors: colors,
+        stops: stops,
+        tileMode: tileMode);
+  } else if (map.containsKey("startAngle")) {
+    Alignment center = parseAlignment(map["center"])??Alignment.center;
+    double startAngle = map["startAngle"];
+    double endAngle = map["endAngle"];
+    return SweepGradient(
+        center: center,
+        startAngle: startAngle,
+        endAngle: endAngle,
+        colors: colors,
+        stops: stops,
+        tileMode: tileMode);
+  } else {
+    Alignment begin = parseAlignment(map["begin"])??Alignment.centerLeft;
+    Alignment end = parseAlignment(map["end"])??Alignment.centerRight;
+    return LinearGradient(
+        begin: begin,
+        end: end,
+        colors: colors,
+        stops: stops,
+        tileMode: tileMode);
   }
+}
+
+BoxDecoration? parseBoxDecoration(String? string) {
+  if(string==null) return null;
+  var map = json.decode(string);
+  Color? color = parseColor(map["color"]);
+  Gradient? gradient = parseGradient(map["gradient"]);
+  DecorationImage? image = parseDecorationImage(map["image"]);
+  return BoxDecoration(color: color, gradient: gradient, image: image);
+}
+
+TextStyle? parseTextStyle(String? string) {
+  if(string==null) return null;
+  var map = json.decode(string);
+  //TODO: more properties need to be implemented, such as decoration, decorationColor, decorationStyle, wordSpacing and so on.
+  Color? color = parseColor(map['color']);
+  Color? backgroundColor = parseColor(map['backgroundColor']);
+  String? fontFamily = map['fontFamily'];
+  //double fontSize = map['fontSize'];
+  FontStyle? fontStyle = 'italic' == map['fontStyle']
+      ? FontStyle.italic
+      : FontStyle.normal;
+  FontWeight? fontWeight = 'w700' == map['fontWeight']
+      ? FontWeight.bold
+      : FontWeight.normal;
+  TextDecoration? decoration = parseTextDecoration(map['decoration']);
+  Color? decorationColor = parseColor(map["decorationColor"]);
+  TextDecorationStyle? decorationStyle =
+  parseTextDecorationStyle(map['decorationStyle']);
+  double? decorationThickness = map['decorationThickness'];
+  double? height = map['height'];
+  double? letterSpacing = map['letterSpacing'];
+
+  return TextStyle(
+    height: height,
+    letterSpacing: letterSpacing,
+    color: color,
+    backgroundColor: backgroundColor,
+    //fontSize: fontSize,
+    fontFamily: fontFamily,
+    fontStyle: fontStyle,
+    fontWeight: fontWeight,
+    decoration: decoration,
+    decorationColor: decorationColor,
+    decorationStyle: decorationStyle,
+    decorationThickness: decorationThickness,
+  );
 }

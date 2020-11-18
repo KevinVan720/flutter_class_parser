@@ -1,37 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_class_parser/toJson.dart';
 import 'dart:convert';
+import 'package:flutter_class_parser/StringParsing.dart';
 
 void main() {
-
-  try {
-    var resBody = {};
-    resBody["email"] = "employerA@gmail.com";
-    resBody["password"] = "admin123";
-    var user = {};
-    user["user"] = resBody;
-    user["ids"] = [1,2,3,4,5];
-    user["colors"] = [Colors.amber.toJson(), Colors.amber.toJson()];
-    user["gradient"]=LinearGradient(colors: [Colors.black, Colors.black]).toJson();
-    user["decorarionImage"]=DecorationImage(
-      colorFilter: ColorFilter.mode(Colors.amber, BlendMode.clear),
-      fit: BoxFit.fill,
-      image: NetworkImage("https://imgur.com/gallery/GurbsrH")
-    ).toJson();
-    user["boxDecoration"]=BoxDecoration(color: Colors.amber, gradient: LinearGradient(colors: [Colors.black, Colors.black]),
-        image: DecorationImage(
-        colorFilter: ColorFilter.mode(Colors.amber, BlendMode.clear),
-        fit: BoxFit.fill,
-        image: NetworkImage("https://imgur.com/gallery/GurbsrH")
-    )).toJson();
-    user["textStyle"]=TextStyle(fontWeight: FontWeight.bold, color: Colors.black12, letterSpacing: 12).toJson();
-    String str = json.encode(user);
-    //print(str);
-    var res=json.decode(str);
-    print((res["boxDecoration"] as String).parseBoxDecoration());
-  } catch(e) {
-    print(e);
-  }
 
   runApp(MyApp());
 }

@@ -98,6 +98,12 @@ extension CurveToJson on Curve {
   }
 }
 
+extension TextAlignToJson on TextAlign {
+  String toJson() {
+    return this.toString().stripFirstDot();
+  }
+}
+
 extension GradientToJsonExtension on Gradient {
   String toJson() {
     var rst = {};

@@ -412,6 +412,26 @@ WrapCrossAlignment? parseWrapCrossAlignment(String? wrapCrossAlignmentString) {
   return WrapCrossAlignment.start;
 }
 
+TextAlign? parseTextAlign(String? string) {
+  if(string ==null) return null;
+  switch(string) {
+    case 'left':
+      return TextAlign.left;
+    case 'right':
+      return TextAlign.right;
+    case 'center':
+      return TextAlign.center;
+    case 'justify':
+      return TextAlign.justify;
+    case 'start':
+      return TextAlign.start;
+    case 'end':
+      return TextAlign.end;
+    default:
+      return null;
+  }
+}
+
 MainAxisSize? parseMainAxisSize(String? mainAxisSizeString) =>
     mainAxisSizeString == 'min' ? MainAxisSize.min : MainAxisSize.max;
 

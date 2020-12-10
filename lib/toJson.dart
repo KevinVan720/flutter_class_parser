@@ -94,7 +94,28 @@ extension ClipToJson on Clip {
 
 extension CurveToJson on Curve {
   String toJson() {
-    return this.toString().stripFirstDot();
+    switch (this) {
+      case Curves.linear:
+        return "linear";
+      case Curves.bounceIn:
+        return "bounceIn";
+      case Curves.bounceOut:
+        return "bounceOut";
+      case Curves.decelerate:
+        return "decelerate";
+      case Curves.ease:
+        return "ease";
+      case Curves.easeIn:
+        return "easeIn";
+      case Curves.bounceOut:
+        return "easeOut";
+      case Curves.elasticIn:
+        return "elasticIn";
+      case Curves.elasticInOut:
+        return "elasticOut";
+      default:
+        return "";
+    }
   }
 }
 

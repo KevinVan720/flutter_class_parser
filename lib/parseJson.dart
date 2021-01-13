@@ -216,6 +216,20 @@ Axis? parseAxis(String? string) {
   return null;
 }
 
+AxisDirection? parseAxisDirection(String? string) {
+  switch (string) {
+    case "up":
+      return AxisDirection.up;
+    case "down":
+      return AxisDirection.down;
+    case "left":
+      return AxisDirection.left;
+    case "right":
+      return AxisDirection.right;
+  }
+  return null;
+}
+
 TextDecoration? parseTextDecoration(String? string) {
   switch (string) {
     case "none":

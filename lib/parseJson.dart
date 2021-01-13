@@ -481,6 +481,29 @@ BorderRadius? parseBorderRadius(Map<String, dynamic>? map) {
   );
 }
 
+Offset? parseOffset(Map<String, dynamic>? map) {
+  if (map == null) return null;
+  double dx=map["dx"];
+  double dy=map["dy"];
+  return Offset(dx, dy);
+}
+
+Size? parseSize(Map<String, dynamic>? map) {
+  if (map == null) return null;
+  double width=map["width"];
+  double height=map["height"];
+  return Size(width, height);
+}
+
+Rect? parseRect(Map<String, dynamic>? map) {
+  if (map == null) return null;
+  double left=map["left"];
+  double right=map["right"];
+  double top=map["top"];
+  double bottom=map["bottom"];
+  return Rect.fromLTRB(left, top, right, bottom);
+}
+
 ColorFilter? parseColorFilter(Map<String, dynamic>? map) {
   if (map == null) return null;
   Color color = parseColor(map["color"]) ?? Colors.white;

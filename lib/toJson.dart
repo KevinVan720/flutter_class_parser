@@ -155,6 +155,35 @@ extension WrapCrossAlignmentToJson on WrapCrossAlignment {
   }
 }
 
+extension OffsetToJsonExtension on Offset {
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> rst = {};
+    rst["dx"]=this.dx;
+    rst["dy"]=this.dy;
+    return rst;
+  }
+}
+
+extension SizeToJsonExtension on Size {
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> rst = {};
+    rst["width"]=this.width;
+    rst["width"]=this.height;
+    return rst;
+  }
+}
+
+extension RectToJsonExtension on Rect {
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> rst = {};
+    rst["left"]=this.left;
+    rst["right"]=this.right;
+    rst["top"]=this.top;
+    rst["bottom"]=this.bottom;
+    return rst;
+  }
+}
+
 extension RadiusToJsonExtension on Radius {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};

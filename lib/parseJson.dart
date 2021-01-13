@@ -429,6 +429,8 @@ TextAlign? parseTextAlign(String? string) {
   }
 }
 
+
+
 MainAxisSize? parseMainAxisSize(String? mainAxisSizeString) =>
     mainAxisSizeString == 'min' ? MainAxisSize.min : MainAxisSize.max;
 
@@ -443,6 +445,27 @@ VerticalDirection? parseVerticalDirection(String? verticalDirectionString) =>
         : VerticalDirection.down;
 
 //Up till this point all parsing should be 1 level. Directly parsing a string.
+
+Radius? parseRadius(Map<String, dynamic>? map) {
+  if (map == null) return null;
+  double x=map["x"];
+  double y=map["y"];
+  return Radius.elliptical(x,y);
+}
+
+BorderRadius? parseBorderRadius(Map<String, dynamic>? map) {
+  if (map == null) return null;
+  Radius? topLeft=parseRadius(map["topLeft"]);
+  Radius? topRight=parseRadius(map["topRight"]);
+  Radius? bottomLeft=parseRadius(map["bottomLeft"]);
+  Radius? bottomRight=parseRadius(map["bottomRight"]);
+  return BorderRadius.only(
+    topLeft: topLeft??Radius.zero,
+    topRight: topRight??Radius.zero,
+    bottomLeft: bottomLeft??Radius.zero,
+    bottomRight: bottomRight??Radius.zero,
+  );
+}
 
 ColorFilter? parseColorFilter(Map<String, dynamic>? map) {
   if (map == null) return null;
@@ -471,7 +494,7 @@ Gradient? parseGradient(Map<String, dynamic>? map) {
       .toList();
   List<double>? stops = map["stops"]?.cast<double>();
   TileMode tileMode = parseTileMode(map["tileMode"]) ?? TileMode.clamp;
-  if (map.containsKey("radius")) {
+  if (map["type"]=="RadialGradient") {
     Alignment center = parseAlignment(map["center"]) ?? Alignment.center;
     double radius = map["radius"];
     return RadialGradient(
@@ -480,7 +503,7 @@ Gradient? parseGradient(Map<String, dynamic>? map) {
         colors: colors,
         stops: stops,
         tileMode: tileMode);
-  } else if (map.containsKey("startAngle")) {
+  } else if (map["type"]=="SweepGradient") {
     Alignment center = parseAlignment(map["center"]) ?? Alignment.center;
     double startAngle = map["startAngle"];
     double endAngle = map["endAngle"];

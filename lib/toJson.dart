@@ -149,9 +149,30 @@ extension WrapCrossAlignmentToJson on WrapCrossAlignment {
   }
 }
 
+extension RadiusToJsonExtension on Radius {
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> rst = {};
+    rst["x"]=this.x;
+    rst["y"]=this.y;
+    return rst;
+  }
+}
+
+extension BorderRadiusToJsonExtension on BorderRadius {
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> rst = {};
+    rst["topLeft"]=this.topLeft.toJson();
+    rst["topRight"]=this.topRight.toJson();
+    rst["bottomLeft"]=this.bottomLeft.toJson();
+    rst["bottomRight"]=this.bottomRight.toJson();
+    return rst;
+  }
+}
+
 extension GradientToJsonExtension on Gradient {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};
+    rst["type"]=this.runtimeType;
     rst.updateNotNull("stops", this.stops);
     rst.updateNotNull("colors", this.colors.map((e) => e.toJson()).toList());
     if (this is LinearGradient) {

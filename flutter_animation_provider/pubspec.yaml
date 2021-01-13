@@ -30,9 +30,20 @@ dependencies:
   tuple: ^1.0.3
   provider: ^4.3.2+3
   shortuuid: ^2.1.1
-  simple_animations: ^2.4.2
+  simple_animations:
+    git: https://github.com/KevinVan720/simple_animations.git
   flutter_class_parser: #0.0.1
     git: https://github.com/KevinVan720/flutter_class_parser
+  cssstylewidget: #0.0.1
+    git: https://github.com/KevinVan720/css_style_widget
+
+  scrollable_positioned_list: ^0.1.8
+
+  material_design_icons_flutter: 4.0.5755
+  flutter_material_pickers: 1.8.1
+  after_layout: ^1.0.7+2
+  visibility_detector:
+    git: https://github.com/KevinVan720/visibility_detector.git
 
 dev_dependencies:
   flutter_test:

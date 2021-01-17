@@ -9,6 +9,7 @@ extension stringParsingExtension on String {
     index = index == 0 ? 0 : index;
     return this.substring(index);
   }
+
 }
 
 Color? parseColor(String? string) {

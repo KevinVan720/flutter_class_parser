@@ -12,6 +12,7 @@ extension ColorToJson on Color {
   String toJson() {
     return this.value.toRadixString(16);
   }
+
 }
 
 extension BlendModeToJson on BlendMode {
@@ -168,7 +169,7 @@ extension SizeToJsonExtension on Size {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};
     rst["width"]=this.width;
-    rst["width"]=this.height;
+    rst["height"]=this.height;
     return rst;
   }
 }

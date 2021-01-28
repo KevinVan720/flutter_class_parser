@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:flutter_class_parser/parseJson.dart';
+import 'package:flutter_class_parser/parse_json.dart';
 
 extension MapExtension<K, V> on Map<K, V> {
   void updateNotNull(K key, V value) {
@@ -186,11 +186,19 @@ extension RectToJsonExtension on Rect {
 }
 
 extension RadiusToJsonExtension on Radius {
+
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};
     rst["x"]=this.x;
     rst["y"]=this.y;
     return rst;
+  }
+
+  static Radius? fromJson(Map<String, dynamic> map) {
+    return Radius.elliptical(
+      map["x"],
+      map["y"],
+    );
   }
 }
 
@@ -203,6 +211,8 @@ extension BorderRadiusToJsonExtension on BorderRadius {
     rst["bottomRight"]=this.bottomRight.toJson();
     return rst;
   }
+
+
 }
 
 extension GradientToJsonExtension on Gradient {

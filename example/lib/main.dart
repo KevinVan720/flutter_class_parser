@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_class_parser/toJson.dart';
+import 'package:flutter_class_parser/to_json.dart';
 import 'dart:convert';
-import 'package:flutter_class_parser/parseJson.dart';
+import 'package:flutter_class_parser/parse_json.dart';
 
 void main() {
 
@@ -65,8 +65,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-
-
 
     return Scaffold(
       appBar: AppBar(

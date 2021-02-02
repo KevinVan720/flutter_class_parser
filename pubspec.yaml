@@ -1,8 +1,7 @@
 name: flutter_class_parser
-description: A new Flutter package.
+description: A package for serialize and deserialize common UI data classes in Flutter.
 version: 0.0.1
-author:
-homepage:
+repository: https://github.com/KevinVan720/flutter_class_parser
 
 environment:
   sdk: ">=2.12.0-49.0.dev <3.0.0"

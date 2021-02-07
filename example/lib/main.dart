@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:flutter_class_parser/parse_json.dart';
 
 void main() {
-
   runApp(MyApp());
 }
 
@@ -65,6 +64,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(BoxDecoration(
+            gradient: LinearGradient(colors: [Colors.amber, Colors.red]))
+        .toJson()
+        .toString());
 
     return Scaffold(
       appBar: AppBar(

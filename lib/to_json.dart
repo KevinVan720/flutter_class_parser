@@ -211,25 +211,26 @@ extension BorderRadiusToJsonExtension on BorderRadius {
     rst["bottomRight"]=this.bottomRight.toJson();
     return rst;
   }
-
-
 }
 
 extension GradientToJsonExtension on Gradient {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};
-    rst["type"]=this.runtimeType;
+
     rst.updateNotNull("stops", this.stops);
     rst.updateNotNull("colors", this.colors.map((e) => e.toJson()).toList());
     if (this is LinearGradient) {
+      rst["type"]="LinearGradient";
       rst.updateNotNull("begin", (this as LinearGradient).begin.toJson());
       rst.updateNotNull("end", (this as LinearGradient).end.toJson());
       rst.updateNotNull("tileMode", (this as LinearGradient).tileMode.toJson());
     } else if (this is RadialGradient) {
+      rst["type"]="RadialGradient";
       rst.updateNotNull("center", (this as RadialGradient).center.toJson());
       rst.updateNotNull("radius", (this as RadialGradient).radius);
       rst.updateNotNull("tileMode", (this as RadialGradient).tileMode.toJson());
     } else if (this is SweepGradient) {
+      rst["type"]="SweepGradient";
       rst.updateNotNull("center", (this as SweepGradient).center.toJson());
       rst.updateNotNull("startAngle", (this as SweepGradient).startAngle);
       rst.updateNotNull("endAngle", (this as SweepGradient).endAngle);

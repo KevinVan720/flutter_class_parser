@@ -1,3 +1,11 @@
-## [0.0.1] - TODO: Add release date.
+## [0.0.1].
 
 Added basic serialization support for Flutter UI data classes.
+
+## [0.0.2].
+
+Update license.
+
+## [0.0.3].
+
+Avoid using runtimeType.

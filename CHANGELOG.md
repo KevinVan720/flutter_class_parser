@@ -9,3 +9,7 @@ Update license.
 ## [0.0.3].
 
 Avoid using runtimeType.
+
+## [0.0.4].
+
+Add borderStyle parsing.

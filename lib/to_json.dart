@@ -156,6 +156,12 @@ extension WrapCrossAlignmentToJson on WrapCrossAlignment {
   }
 }
 
+extension BorderStyleToJson on BorderStyle {
+  String toJson() {
+    return this.toString().stripFirstDot();
+  }
+}
+
 extension OffsetToJsonExtension on Offset {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};

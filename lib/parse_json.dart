@@ -459,7 +459,19 @@ VerticalDirection? parseVerticalDirection(String? verticalDirectionString) =>
         ? VerticalDirection.up
         : VerticalDirection.down;
 
-//Up till this point all parsing should be 1 level. Directly parsing a string.
+BorderStyle? parseBorderStyle(String? string) {
+  if (string == null) return null;
+  switch (string) {
+    case 'solid':
+      return BorderStyle.solid;
+    case 'none':
+      return BorderStyle.none;
+    default:
+      return null;
+  }
+}
+
+///Up till this point all parsing should be 1 level. Directly parsing a string.
 
 Radius? parseRadius(Map<String, dynamic>? map) {
   if (map == null) return null;

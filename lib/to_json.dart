@@ -12,7 +12,6 @@ extension ColorToJson on Color {
   String toJson() {
     return this.value.toRadixString(16);
   }
-
 }
 
 extension BlendModeToJson on BlendMode {
@@ -27,9 +26,13 @@ extension TileModeToJson on TileMode {
   }
 }
 
-extension AlignmentGeometryToJson on AlignmentGeometry {
+extension AlignmentToJson on Alignment {
   String toJson() {
-    return this.toString().stripFirstDot();
+    if (!this.toString().contains("(")) {
+      return this.toString().stripFirstDot();
+    } else {
+      return this.toString().substring(9);
+    }
   }
 }
 
@@ -165,8 +168,8 @@ extension BorderStyleToJson on BorderStyle {
 extension OffsetToJsonExtension on Offset {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};
-    rst["dx"]=this.dx;
-    rst["dy"]=this.dy;
+    rst["dx"] = this.dx;
+    rst["dy"] = this.dy;
     return rst;
   }
 }
@@ -174,8 +177,8 @@ extension OffsetToJsonExtension on Offset {
 extension SizeToJsonExtension on Size {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};
-    rst["width"]=this.width;
-    rst["height"]=this.height;
+    rst["width"] = this.width;
+    rst["height"] = this.height;
     return rst;
   }
 }
@@ -183,20 +186,19 @@ extension SizeToJsonExtension on Size {
 extension RectToJsonExtension on Rect {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};
-    rst["left"]=this.left;
-    rst["right"]=this.right;
-    rst["top"]=this.top;
-    rst["bottom"]=this.bottom;
+    rst["left"] = this.left;
+    rst["right"] = this.right;
+    rst["top"] = this.top;
+    rst["bottom"] = this.bottom;
     return rst;
   }
 }
 
 extension RadiusToJsonExtension on Radius {
-
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};
-    rst["x"]=this.x;
-    rst["y"]=this.y;
+    rst["x"] = this.x;
+    rst["y"] = this.y;
     return rst;
   }
 
@@ -211,10 +213,10 @@ extension RadiusToJsonExtension on Radius {
 extension BorderRadiusToJsonExtension on BorderRadius {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};
-    rst["topLeft"]=this.topLeft.toJson();
-    rst["topRight"]=this.topRight.toJson();
-    rst["bottomLeft"]=this.bottomLeft.toJson();
-    rst["bottomRight"]=this.bottomRight.toJson();
+    rst["topLeft"] = this.topLeft.toJson();
+    rst["topRight"] = this.topRight.toJson();
+    rst["bottomLeft"] = this.bottomLeft.toJson();
+    rst["bottomRight"] = this.bottomRight.toJson();
     return rst;
   }
 }
@@ -226,18 +228,22 @@ extension GradientToJsonExtension on Gradient {
     rst.updateNotNull("stops", this.stops);
     rst.updateNotNull("colors", this.colors.map((e) => e.toJson()).toList());
     if (this is LinearGradient) {
-      rst["type"]="LinearGradient";
-      rst.updateNotNull("begin", (this as LinearGradient).begin.toJson());
-      rst.updateNotNull("end", (this as LinearGradient).end.toJson());
+      rst["type"] = "LinearGradient";
+      rst.updateNotNull(
+          "begin", ((this as LinearGradient).begin as Alignment).toJson());
+      rst.updateNotNull(
+          "end", ((this as LinearGradient).end as Alignment).toJson());
       rst.updateNotNull("tileMode", (this as LinearGradient).tileMode.toJson());
     } else if (this is RadialGradient) {
-      rst["type"]="RadialGradient";
-      rst.updateNotNull("center", (this as RadialGradient).center.toJson());
+      rst["type"] = "RadialGradient";
+      rst.updateNotNull(
+          "center", ((this as RadialGradient).center as Alignment).toJson());
       rst.updateNotNull("radius", (this as RadialGradient).radius);
       rst.updateNotNull("tileMode", (this as RadialGradient).tileMode.toJson());
     } else if (this is SweepGradient) {
-      rst["type"]="SweepGradient";
-      rst.updateNotNull("center", (this as SweepGradient).center.toJson());
+      rst["type"] = "SweepGradient";
+      rst.updateNotNull(
+          "center", ((this as SweepGradient).center as Alignment).toJson());
       rst.updateNotNull("startAngle", (this as SweepGradient).startAngle);
       rst.updateNotNull("endAngle", (this as SweepGradient).endAngle);
       rst.updateNotNull("tileMode", (this as SweepGradient).tileMode.toJson());
@@ -267,7 +273,7 @@ extension DecorationImageToJsonExtension on DecorationImage {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};
     rst.updateNotNull("fit", this.fit?.toJson());
-    rst.updateNotNull("alignment", this.alignment.toJson());
+    rst.updateNotNull("alignment", (this.alignment as Alignment).toJson());
     rst.updateNotNull("colorFilter", this.colorFilter?.toJson());
     rst.updateNotNull("url", (this.image as NetworkImage).url);
     return rst;

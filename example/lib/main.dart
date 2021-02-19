@@ -69,6 +69,11 @@ class _MyHomePageState extends State<MyHomePage> {
         .toJson()
         .toString());
 
+    debugPrint(Alignment.bottomCenter.toJson());
+    debugPrint(
+        parseAlignment(json.decode(json.encode(Alignment.bottomLeft.toJson())))
+            .toString());
+
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by

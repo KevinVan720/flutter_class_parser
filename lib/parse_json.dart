@@ -9,7 +9,6 @@ extension stringParsingExtension on String {
     index = index == 0 ? 0 : index;
     return this.substring(index);
   }
-
 }
 
 Color? parseColor(String? string) {
@@ -444,8 +443,6 @@ TextAlign? parseTextAlign(String? string) {
   }
 }
 
-
-
 MainAxisSize? parseMainAxisSize(String? mainAxisSizeString) =>
     mainAxisSizeString == 'min' ? MainAxisSize.min : MainAxisSize.max;
 
@@ -475,45 +472,45 @@ BorderStyle? parseBorderStyle(String? string) {
 
 Radius? parseRadius(Map<String, dynamic>? map) {
   if (map == null) return null;
-  double x=map["x"];
-  double y=map["y"];
-  return Radius.elliptical(x,y);
+  double x = map["x"];
+  double y = map["y"];
+  return Radius.elliptical(x, y);
 }
 
 BorderRadius? parseBorderRadius(Map<String, dynamic>? map) {
   if (map == null) return null;
-  Radius? topLeft=parseRadius(map["topLeft"]);
-  Radius? topRight=parseRadius(map["topRight"]);
-  Radius? bottomLeft=parseRadius(map["bottomLeft"]);
-  Radius? bottomRight=parseRadius(map["bottomRight"]);
+  Radius? topLeft = parseRadius(map["topLeft"]);
+  Radius? topRight = parseRadius(map["topRight"]);
+  Radius? bottomLeft = parseRadius(map["bottomLeft"]);
+  Radius? bottomRight = parseRadius(map["bottomRight"]);
   return BorderRadius.only(
-    topLeft: topLeft??Radius.zero,
-    topRight: topRight??Radius.zero,
-    bottomLeft: bottomLeft??Radius.zero,
-    bottomRight: bottomRight??Radius.zero,
+    topLeft: topLeft ?? Radius.zero,
+    topRight: topRight ?? Radius.zero,
+    bottomLeft: bottomLeft ?? Radius.zero,
+    bottomRight: bottomRight ?? Radius.zero,
   );
 }
 
 Offset? parseOffset(Map<String, dynamic>? map) {
   if (map == null) return null;
-  double dx=map["dx"];
-  double dy=map["dy"];
+  double dx = map["dx"];
+  double dy = map["dy"];
   return Offset(dx, dy);
 }
 
 Size? parseSize(Map<String, dynamic>? map) {
   if (map == null) return null;
-  double width=map["width"];
-  double height=map["height"];
+  double width = map["width"];
+  double height = map["height"];
   return Size(width, height);
 }
 
 Rect? parseRect(Map<String, dynamic>? map) {
   if (map == null) return null;
-  double left=map["left"];
-  double right=map["right"];
-  double top=map["top"];
-  double bottom=map["bottom"];
+  double left = map["left"];
+  double right = map["right"];
+  double top = map["top"];
+  double bottom = map["bottom"];
   return Rect.fromLTRB(left, top, right, bottom);
 }
 
@@ -544,7 +541,7 @@ Gradient? parseGradient(Map<String, dynamic>? map) {
       .toList();
   List<double>? stops = map["stops"]?.cast<double>();
   TileMode tileMode = parseTileMode(map["tileMode"]) ?? TileMode.clamp;
-  if (map["type"]=="RadialGradient") {
+  if (map["type"] == "RadialGradient") {
     Alignment center = parseAlignment(map["center"]) ?? Alignment.center;
     double radius = map["radius"];
     return RadialGradient(
@@ -553,7 +550,7 @@ Gradient? parseGradient(Map<String, dynamic>? map) {
         colors: colors,
         stops: stops,
         tileMode: tileMode);
-  } else if (map["type"]=="SweepGradient") {
+  } else if (map["type"] == "SweepGradient") {
     Alignment center = parseAlignment(map["center"]) ?? Alignment.center;
     double startAngle = map["startAngle"];
     double endAngle = map["endAngle"];

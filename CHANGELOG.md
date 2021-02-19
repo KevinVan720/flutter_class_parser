@@ -13,3 +13,7 @@ Avoid using runtimeType.
 ## [0.0.4].
 
 Add borderStyle parsing.
+
+## [0.0.5].
+
+Fix Alignment parsing.

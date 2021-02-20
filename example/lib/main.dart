@@ -64,12 +64,12 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(BoxDecoration(
-            gradient: LinearGradient(colors: [Colors.amber, Colors.red]))
-        .toJson()
+    debugPrint(parseBoxDecoration(json.decode(json.encode(BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment(0.1, 0.2),
+                colors: [Colors.amber, Colors.red])).toJson())))
         .toString());
 
-    debugPrint(Alignment.bottomCenter.toJson());
     debugPrint(
         parseAlignment(json.decode(json.encode(Alignment.bottomLeft.toJson())))
             .toString());

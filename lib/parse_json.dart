@@ -131,7 +131,7 @@ Alignment? parseAlignment(String? string) {
       {
         if (string != null) {
           List<String> aligns = string
-              .substring(string.indexOf("("), string.indexOf(")"))
+              .substring(string.indexOf("(") + 1, string.indexOf(")"))
               .split(",");
           alignment =
               Alignment(double.parse(aligns[0]), double.parse(aligns[1]));
@@ -536,6 +536,7 @@ DecorationImage? parseDecorationImage(Map<String, dynamic>? map) {
 
 Gradient? parseGradient(Map<String, dynamic>? map) {
   if (map == null) return null;
+  print(map);
   List<Color> colors = (map["colors"] as List)
       .map((e) => parseColor(e) ?? Colors.white)
       .toList();

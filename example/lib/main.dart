@@ -74,6 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
         parseAlignment(json.decode(json.encode(Alignment.bottomLeft.toJson())))
             .toString());
 
+    debugPrint(parseFontWeight(json.decode(json.encode(FontWeight.w100.toJson()))).toString());
+
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by

@@ -17,3 +17,11 @@ Add borderStyle parsing.
 ## [0.0.5].
 
 Fix Alignment parsing.
+
+## [0.0.6].
+
+Fix Alignment parsing.
+
+## [0.0.7].
+
+Add font weight parsing.

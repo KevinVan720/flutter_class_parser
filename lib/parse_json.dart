@@ -333,6 +333,44 @@ TextDirection? parseTextDirection(String? string) {
   return textDirection;
 }
 
+FontWeight? parseFontWeight(String? textFontWeight) {
+  FontWeight? fontWeight;
+  switch (textFontWeight) {
+    case 'w100':
+      fontWeight = FontWeight.w100;
+      break;
+    case 'w200':
+      fontWeight = FontWeight.w200;
+      break;
+    case 'w300':
+      fontWeight = FontWeight.w300;
+      break;
+    case 'normal':
+    case 'w400':
+      fontWeight = FontWeight.w400;
+      break;
+    case 'w500':
+      fontWeight = FontWeight.w500;
+      break;
+    case 'w600':
+      fontWeight = FontWeight.w600;
+      break;
+    case 'bold':
+    case 'w700':
+      fontWeight = FontWeight.w700;
+      break;
+    case 'w800':
+      fontWeight = FontWeight.w800;
+      break;
+    case 'w900':
+      fontWeight = FontWeight.w900;
+      break;
+    default:
+      fontWeight = FontWeight.normal;
+  }
+  return fontWeight;
+}
+
 EdgeInsetsGeometry? parseEdgeInsetsGeometry(String? string) {
   //left,top,right,bottom
   if (string == null || string.trim() == '') {
@@ -591,8 +629,7 @@ TextStyle? parseTextStyle(Map<String, dynamic>? map) {
   //double fontSize = map['fontSize'];
   FontStyle? fontStyle =
       'italic' == map['fontStyle'] ? FontStyle.italic : FontStyle.normal;
-  FontWeight? fontWeight =
-      'w700' == map['fontWeight'] ? FontWeight.bold : FontWeight.normal;
+  FontWeight? fontWeight = parseFontWeight(map['fontWeight']);
   TextDecoration? decoration = parseTextDecoration(map['decoration']);
   Color? decorationColor = parseColor(map["decorationColor"]);
   TextDecorationStyle? decorationStyle =

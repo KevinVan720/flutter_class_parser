@@ -84,6 +84,12 @@ extension AxisDirectionToJson on AxisDirection {
   }
 }
 
+extension TextOverflowToJson on TextOverflow {
+  String toJson() {
+    return this.toString().stripFirstDot();
+  }
+}
+
 extension TextDecorationToJson on TextDecoration {
   String toJson() {
     return this.toString().stripFirstDot();

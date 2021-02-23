@@ -25,3 +25,7 @@ Fix Alignment parsing.
 ## [0.0.7].
 
 Add font weight parsing.
+
+## [0.0.8].
+
+Redo enum and Curve parsing.

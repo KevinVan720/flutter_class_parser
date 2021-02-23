@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
+import 'to_json.dart';
 
 //I can make parsing be extension methods on String and Map<String, dynamic>, but that would require
 
@@ -18,84 +18,26 @@ Color? parseColor(String? string) {
 }
 
 BlendMode? parseBlendMode(String? string) {
-  switch (string?.trim()) {
-    case 'clear':
-      return BlendMode.clear;
-    case 'src':
-      return BlendMode.src;
-    case 'dst':
-      return BlendMode.dst;
-    case 'srcOver':
-      return BlendMode.srcOver;
-    case 'dstOver':
-      return BlendMode.dstOver;
-    case 'srcIn':
-      return BlendMode.srcIn;
-    case 'dstIn':
-      return BlendMode.dstIn;
-    case 'srcOut':
-      return BlendMode.srcOut;
-    case 'dstOut':
-      return BlendMode.dstOut;
-    case 'srcATop':
-      return BlendMode.srcATop;
-    case 'dstATop':
-      return BlendMode.dstATop;
-    case 'xor':
-      return BlendMode.xor;
-    case 'plus':
-      return BlendMode.plus;
-    case 'modulate':
-      return BlendMode.modulate;
-    case 'screen':
-      return BlendMode.screen;
-    case 'overlay':
-      return BlendMode.overlay;
-    case 'darken':
-      return BlendMode.darken;
-    case 'lighten':
-      return BlendMode.lighten;
-    case 'colorDodge':
-      return BlendMode.colorDodge;
-    case 'colorBurn':
-      return BlendMode.colorBurn;
-    case 'hardLight':
-      return BlendMode.hardLight;
-    case 'softLight':
-      return BlendMode.softLight;
-    case 'difference':
-      return BlendMode.difference;
-    case 'exclusion':
-      return BlendMode.exclusion;
-    case 'multiply':
-      return BlendMode.multiply;
-    case 'hue':
-      return BlendMode.hue;
-    case 'saturation':
-      return BlendMode.saturation;
-    case 'color':
-      return BlendMode.color;
-    case 'luminosity':
-      return BlendMode.luminosity;
-
-    default:
-      return null;
-  }
+  BlendMode? rst;
+  BlendMode.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
 }
 
 TileMode? parseTileMode(String? string) {
-  switch (string) {
-    case "clamp":
-      return TileMode.clamp;
-    case "mirror":
-      return TileMode.mirror;
-    case "repeated":
-      return TileMode.repeated;
-    default:
-      return null;
-  }
+  TileMode? rst;
+  TileMode.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
 }
 
+///not an enum
 Alignment? parseAlignment(String? string) {
   Alignment? alignment;
   switch (string) {
@@ -143,93 +85,66 @@ Alignment? parseAlignment(String? string) {
 }
 
 BoxFit? parseBoxFit(String? string) {
-  switch (string) {
-    case 'fill':
-      return BoxFit.fill;
-    case 'contain':
-      return BoxFit.contain;
-    case 'cover':
-      return BoxFit.cover;
-    case 'fitWidth':
-      return BoxFit.fitWidth;
-    case 'fitHeight':
-      return BoxFit.fitHeight;
-    case 'none':
-      return BoxFit.none;
-    case 'scaleDown':
-      return BoxFit.scaleDown;
-    default:
-      return null;
-  }
+  BoxFit? rst;
+  BoxFit.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
 }
 
 ImageRepeat? parseImageRepeat(String? string) {
-  switch (string) {
-    case 'repeat':
-      return ImageRepeat.repeat;
-    case 'repeatX':
-      return ImageRepeat.repeatX;
-    case 'repeatY':
-      return ImageRepeat.repeatY;
-    case 'noRepeat':
-      return ImageRepeat.noRepeat;
-    default:
-      return null;
-  }
+  ImageRepeat? rst;
+  ImageRepeat.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
 }
 
 FilterQuality? parseFilterQuality(String? string) {
-  switch (string) {
-    case 'none':
-      return FilterQuality.none;
-    case 'low':
-      return FilterQuality.low;
-    case 'medium':
-      return FilterQuality.medium;
-    case 'high':
-      return FilterQuality.high;
-    default:
-      return null;
-  }
+  FilterQuality? rst;
+  FilterQuality.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
 }
 
 StackFit? parseStackFit(String? string) {
-  switch (string) {
-    case 'loose':
-      return StackFit.loose;
-    case 'expand':
-      return StackFit.expand;
-    case 'passthrough':
-      return StackFit.passthrough;
-    default:
-      return null;
-  }
+  StackFit? rst;
+  StackFit.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
 }
 
 Axis? parseAxis(String? string) {
-  switch (string) {
-    case "horizontal":
-      return Axis.horizontal;
-    case "vertical":
-      return Axis.vertical;
-  }
-  return null;
+  Axis? rst;
+  Axis.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
 }
 
 AxisDirection? parseAxisDirection(String? string) {
-  switch (string) {
-    case "up":
-      return AxisDirection.up;
-    case "down":
-      return AxisDirection.down;
-    case "left":
-      return AxisDirection.left;
-    case "right":
-      return AxisDirection.right;
-  }
-  return null;
+  AxisDirection? rst;
+  AxisDirection.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
 }
 
+///not an enum
 TextDecoration? parseTextDecoration(String? string) {
   switch (string) {
     case "none":
@@ -246,129 +161,143 @@ TextDecoration? parseTextDecoration(String? string) {
 }
 
 TextDecorationStyle? parseTextDecorationStyle(String? string) {
-  switch (string) {
-    case "solid":
-      return TextDecorationStyle.solid;
-    case "double":
-      return TextDecorationStyle.double;
-    case "dotted":
-      return TextDecorationStyle.dotted;
-    case "dashed":
-      return TextDecorationStyle.dashed;
-    case "wavy":
-      return TextDecorationStyle.wavy;
-    default:
-      return null;
-  }
+  TextDecorationStyle? rst;
+  TextDecorationStyle.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
 }
 
 Clip? parseClipBehavior(String? string) {
-  switch (string) {
-    case "antiAlias":
-      return Clip.antiAlias;
-    case "none":
-      return Clip.none;
-    case "hardEdge":
-      return Clip.hardEdge;
-    case "antiAliasWithSaveLayer":
-      return Clip.antiAliasWithSaveLayer;
-    default:
-      return null;
-  }
+  Clip? rst;
+  Clip.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
 }
 
 Curve? parseCurve(String? string) {
   switch (string) {
     case "linear":
       return Curves.linear;
-    case "bounceIn":
-      return Curves.bounceIn;
-    case "bounceOut":
-      return Curves.bounceOut;
     case "decelerate":
       return Curves.decelerate;
+    case "fastLinearToSlowEaseIn":
+      return Curves.fastLinearToSlowEaseIn;
     case "ease":
       return Curves.ease;
     case "easeIn":
       return Curves.easeIn;
+    case "easeInToLinear":
+      return Curves.easeInToLinear;
+    case "easeInSine":
+      return Curves.easeInSine;
+    case "easeInQuad":
+      return Curves.easeInQuad;
+    case "easeInCubic":
+      return Curves.easeInCubic;
+    case "easeInQuart":
+      return Curves.easeInQuart;
+    case "easeInQuint":
+      return Curves.easeInQuint;
+    case "easeInExpo":
+      return Curves.easeInExpo;
+    case "easeInCirc":
+      return Curves.easeInCirc;
+    case "easeInBack":
+      return Curves.easeInBack;
     case "easeOut":
       return Curves.easeOut;
+    case "linearToEaseOut":
+      return Curves.linearToEaseOut;
+    case "easeOutSine":
+      return Curves.easeOutSine;
+    case "easeOutQuad":
+      return Curves.easeOutQuad;
+    case "easeOutCubic":
+      return Curves.easeOutCubic;
+    case "easeOutQuart":
+      return Curves.easeOutQuart;
+    case "easeOutQuint":
+      return Curves.easeOutQuint;
+    case "easeOutExpo":
+      return Curves.easeOutExpo;
+    case "easeOutCirc":
+      return Curves.easeOutCirc;
+    case "easeOutBack":
+      return Curves.easeOutBack;
+    case "easeInOut":
+      return Curves.easeInOut;
+    case "easeInOutSine":
+      return Curves.easeInOutSine;
+    case "easeInOutQuad":
+      return Curves.easeInOutQuad;
+    case "easeInOutCubic":
+      return Curves.easeInOutCubic;
+    case "easeInOutQuart":
+      return Curves.easeInOutQuart;
+    case "easeInOutQuint":
+      return Curves.easeInOutQuint;
+    case "easeInOutExpo":
+      return Curves.easeInOutExpo;
+    case "easeInOutCirc":
+      return Curves.easeInOutCirc;
+    case "easeInOutBack":
+      return Curves.easeInOutBack;
+    case "fastOutSlowIn":
+      return Curves.fastOutSlowIn;
+    case "slowMiddle":
+      return Curves.slowMiddle;
+    case "bounceIn":
+      return Curves.bounceIn;
+    case "bounceOut":
+      return Curves.bounceOut;
+    case "bounceInOut":
+      return Curves.bounceInOut;
     case "elasticIn":
       return Curves.elasticIn;
     case "elasticOut":
       return Curves.elasticOut;
+    case "elasticOut":
+      return Curves.elasticInOut;
     default:
       return null;
   }
 }
 
 TextOverflow? parseTextOverflow(String? string) {
-  TextOverflow? textOverflow;
-  switch (string) {
-    case "ellipsis":
-      textOverflow = TextOverflow.ellipsis;
-      break;
-    case "clip":
-      textOverflow = TextOverflow.clip;
-      break;
-    case "fade":
-      textOverflow = TextOverflow.fade;
-      break;
-  }
-  return textOverflow;
+  TextOverflow? rst;
+  TextOverflow.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
 }
 
 TextDirection? parseTextDirection(String? string) {
-  TextDirection textDirection = TextDirection.ltr;
-  switch (string) {
-    case 'ltr':
-      textDirection = TextDirection.ltr;
-      break;
-    case 'rtl':
-      textDirection = TextDirection.rtl;
-      break;
-    default:
-      textDirection = TextDirection.ltr;
-  }
-  return textDirection;
+  TextDirection? rst;
+  TextDirection.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
 }
 
-FontWeight? parseFontWeight(String? textFontWeight) {
-  FontWeight? fontWeight;
-  switch (textFontWeight) {
-    case 'w100':
-      fontWeight = FontWeight.w100;
-      break;
-    case 'w200':
-      fontWeight = FontWeight.w200;
-      break;
-    case 'w300':
-      fontWeight = FontWeight.w300;
-      break;
-    case 'normal':
-    case 'w400':
-      fontWeight = FontWeight.w400;
-      break;
-    case 'w500':
-      fontWeight = FontWeight.w500;
-      break;
-    case 'w600':
-      fontWeight = FontWeight.w600;
-      break;
-    case 'bold':
-    case 'w700':
-      fontWeight = FontWeight.w700;
-      break;
-    case 'w800':
-      fontWeight = FontWeight.w800;
-      break;
-    case 'w900':
-      fontWeight = FontWeight.w900;
-      break;
-    default:
-      fontWeight = FontWeight.normal;
-  }
-  return fontWeight;
+///sorta like an enum
+FontWeight? parseFontWeight(String? string) {
+  FontWeight? rst;
+  FontWeight.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
 }
 
 EdgeInsetsGeometry? parseEdgeInsetsGeometry(String? string) {
@@ -384,126 +313,94 @@ EdgeInsetsGeometry? parseEdgeInsetsGeometry(String? string) {
       bottom: double.parse(values[3]));
 }
 
-CrossAxisAlignment? parseCrossAxisAlignment(String? crossAxisAlignmentString) {
-  if (crossAxisAlignmentString == null) return null;
-  //crossAxisAlignmentString = crossAxisAlignmentString.substring(18);
-
-  switch (crossAxisAlignmentString) {
-    case 'start':
-      return CrossAxisAlignment.start;
-    case 'end':
-      return CrossAxisAlignment.end;
-    case 'center':
-      return CrossAxisAlignment.center;
-    case 'stretch':
-      return CrossAxisAlignment.stretch;
-    case 'baseline':
-      return CrossAxisAlignment.baseline;
-  }
-  return CrossAxisAlignment.center;
+CrossAxisAlignment? parseCrossAxisAlignment(String? string) {
+  CrossAxisAlignment? rst;
+  CrossAxisAlignment.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
 }
 
-MainAxisAlignment? parseMainAxisAlignment(String? mainAxisAlignmentString) {
-  if (mainAxisAlignmentString == null) return null;
-  //mainAxisAlignmentString = mainAxisAlignmentString.substring(17);
-
-  switch (mainAxisAlignmentString) {
-    case 'start':
-      return MainAxisAlignment.start;
-    case 'end':
-      return MainAxisAlignment.end;
-    case 'center':
-      return MainAxisAlignment.center;
-    case 'spaceBetween':
-      return MainAxisAlignment.spaceBetween;
-    case 'spaceAround':
-      return MainAxisAlignment.spaceAround;
-    case 'spaceEvenly':
-      return MainAxisAlignment.spaceEvenly;
-  }
-  return MainAxisAlignment.start;
+MainAxisAlignment? parseMainAxisAlignment(String? string) {
+  MainAxisAlignment? rst;
+  MainAxisAlignment.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
 }
 
-WrapAlignment? parseWrapAlignment(String? wrapAlignmentString) {
-  if (wrapAlignmentString == null) return null;
-  //wrapAlignmentString = wrapAlignmentString.substring(14);
-
-  switch (wrapAlignmentString) {
-    case 'start':
-      return WrapAlignment.start;
-    case 'end':
-      return WrapAlignment.end;
-    case 'center':
-      return WrapAlignment.center;
-    case 'spaceBetween':
-      return WrapAlignment.spaceBetween;
-    case 'spaceAround':
-      return WrapAlignment.spaceAround;
-    case 'spaceEvenly':
-      return WrapAlignment.spaceEvenly;
-  }
-  return WrapAlignment.start;
+WrapAlignment? parseWrapAlignment(String? string) {
+  WrapAlignment? rst;
+  WrapAlignment.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
 }
 
-WrapCrossAlignment? parseWrapCrossAlignment(String? wrapCrossAlignmentString) {
-  if (wrapCrossAlignmentString == null) return null;
-
-  //wrapCrossAlignmentString = wrapCrossAlignmentString.substring(19);
-
-  switch (wrapCrossAlignmentString) {
-    case 'start':
-      return WrapCrossAlignment.start;
-    case 'end':
-      return WrapCrossAlignment.end;
-    case 'center':
-      return WrapCrossAlignment.center;
-  }
-  return WrapCrossAlignment.start;
+WrapCrossAlignment? parseWrapCrossAlignment(String? string) {
+  WrapCrossAlignment? rst;
+  WrapCrossAlignment.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
 }
 
 TextAlign? parseTextAlign(String? string) {
-  if (string == null) return null;
-  switch (string) {
-    case 'left':
-      return TextAlign.left;
-    case 'right':
-      return TextAlign.right;
-    case 'center':
-      return TextAlign.center;
-    case 'justify':
-      return TextAlign.justify;
-    case 'start':
-      return TextAlign.start;
-    case 'end':
-      return TextAlign.end;
-    default:
-      return null;
-  }
+  TextAlign? rst;
+  TextAlign.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
 }
 
-MainAxisSize? parseMainAxisSize(String? mainAxisSizeString) =>
-    mainAxisSizeString == 'min' ? MainAxisSize.min : MainAxisSize.max;
+MainAxisSize? parseMainAxisSize(String? string) {
+  MainAxisSize? rst;
+  MainAxisSize.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
+}
 
-TextBaseline? parseTextBaseline(String? parseTextBaselineString) =>
-    'alphabetic' == parseTextBaselineString
-        ? TextBaseline.alphabetic
-        : TextBaseline.ideographic;
+TextBaseline? parseTextBaseline(String? string) {
+  TextBaseline? rst;
+  TextBaseline.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
+}
 
-VerticalDirection? parseVerticalDirection(String? verticalDirectionString) =>
-    'up' == verticalDirectionString
-        ? VerticalDirection.up
-        : VerticalDirection.down;
+VerticalDirection? parseVerticalDirection(String? string) {
+  VerticalDirection? rst;
+  VerticalDirection.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
+}
 
 BorderStyle? parseBorderStyle(String? string) {
-  if (string == null) return null;
-  switch (string) {
-    case 'solid':
-      return BorderStyle.solid;
-    case 'none':
-      return BorderStyle.none;
-    default:
-      return null;
-  }
+  BorderStyle? rst;
+  BorderStyle.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
 }
 
 ///Up till this point all parsing should be 1 level. Directly parsing a string.
@@ -626,7 +523,7 @@ TextStyle? parseTextStyle(Map<String, dynamic>? map) {
   Color? color = parseColor(map['color']);
   Color? backgroundColor = parseColor(map['backgroundColor']);
   String? fontFamily = map['fontFamily'];
-  //double fontSize = map['fontSize'];
+  double fontSize = map['fontSize'];
   FontStyle? fontStyle =
       'italic' == map['fontStyle'] ? FontStyle.italic : FontStyle.normal;
   FontWeight? fontWeight = parseFontWeight(map['fontWeight']);
@@ -643,7 +540,7 @@ TextStyle? parseTextStyle(Map<String, dynamic>? map) {
     letterSpacing: letterSpacing,
     color: color,
     backgroundColor: backgroundColor,
-    //fontSize: fontSize,
+    fontSize: fontSize,
     fontFamily: fontFamily,
     fontStyle: fontStyle,
     fontWeight: fontWeight,

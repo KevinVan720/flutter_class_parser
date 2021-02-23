@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'package:flutter_class_parser/parse_json.dart';
 
 extension MapExtension<K, V> on Map<K, V> {
@@ -96,6 +95,12 @@ extension TextDecorationToJson on TextDecoration {
   }
 }
 
+extension TextDirectionToJson on TextDirection {
+  String toJson() {
+    return this.toString().stripFirstDot();
+  }
+}
+
 extension TextDecorationStyleToJson on TextDecorationStyle {
   String toJson() {
     return this.toString().stripFirstDot();
@@ -113,20 +118,84 @@ extension CurveToJson on Curve {
     switch (this) {
       case Curves.linear:
         return "linear";
-      case Curves.bounceIn:
-        return "bounceIn";
-      case Curves.bounceOut:
-        return "bounceOut";
       case Curves.decelerate:
         return "decelerate";
+      case Curves.fastLinearToSlowEaseIn:
+        return "fastLinearToSlowEaseIn";
       case Curves.ease:
         return "ease";
       case Curves.easeIn:
         return "easeIn";
-      case Curves.bounceOut:
+      case Curves.easeInToLinear:
+        return "easeInToLinear";
+      case Curves.easeInSine:
+        return "easeInSine";
+      case Curves.easeInQuad:
+        return "easeInQuad";
+      case Curves.easeInCubic:
+        return "easeInCubic";
+      case Curves.easeInQuart:
+        return "easeInQuart";
+      case Curves.easeInQuint:
+        return "easeInQuint";
+      case Curves.easeInExpo:
+        return "easeInExpo";
+      case Curves.easeInCirc:
+        return "easeInCirc";
+      case Curves.easeInBack:
+        return "easeInBack";
+      case Curves.easeOut:
         return "easeOut";
+      case Curves.linearToEaseOut:
+        return "linearToEaseOut";
+      case Curves.easeOutSine:
+        return "easeOutSine";
+      case Curves.easeOutQuad:
+        return "easeOutQuad";
+      case Curves.easeOutCubic:
+        return "easeOutCubic";
+      case Curves.easeOutQuart:
+        return "easeOutQuart";
+      case Curves.easeOutQuint:
+        return "easeOutQuint";
+      case Curves.easeOutExpo:
+        return "easeOutExpo";
+      case Curves.easeOutCirc:
+        return "easeOutCirc";
+      case Curves.easeOutBack:
+        return "easeOutBack";
+      case Curves.easeInOut:
+        return "easeInOut";
+      case Curves.easeInOutSine:
+        return "easeInOutSine";
+      case Curves.easeInOutQuad:
+        return "easeInOutQuad";
+      case Curves.easeInOutCubic:
+        return "easeInOutCubic";
+      case Curves.easeInOutQuart:
+        return "easeInOutQuart";
+      case Curves.easeInOutQuint:
+        return "easeInOutQuint";
+      case Curves.easeInOutExpo:
+        return "easeInOutExpo";
+      case Curves.easeInOutCirc:
+        return "easeInOutCirc";
+      case Curves.easeInOutBack:
+        return "easeInOutBack";
+      case Curves.fastOutSlowIn:
+        return "fastOutSlowIn";
+      case Curves.slowMiddle:
+        return "slowMiddle";
+      case Curves.bounceIn:
+        return "bounceIn";
+      case Curves.bounceOut:
+        return "bounceOut";
+      case Curves.bounceInOut:
+        return "bounceInOut";
       case Curves.elasticIn:
         return "elasticIn";
+      case Curves.elasticOut:
+        return "elasticOut";
       case Curves.elasticInOut:
         return "elasticOut";
       default:
@@ -160,6 +229,24 @@ extension WrapAlignmentToJson on WrapAlignment {
 }
 
 extension WrapCrossAlignmentToJson on WrapCrossAlignment {
+  String toJson() {
+    return this.toString().stripFirstDot();
+  }
+}
+
+extension MainAxisSizeToJson on MainAxisSize {
+  String toJson() {
+    return this.toString().stripFirstDot();
+  }
+}
+
+extension TextBaselineToJson on TextBaseline {
+  String toJson() {
+    return this.toString().stripFirstDot();
+  }
+}
+
+extension VerticalDirectionToJson on VerticalDirection {
   String toJson() {
     return this.toString().stripFirstDot();
   }
@@ -299,17 +386,21 @@ extension BoxDecorationToJsonExtension on BoxDecoration {
 extension TextStyleToJsonExtension on TextStyle {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};
-    rst.updateNotNull("fontFamily", this.fontFamily);
     rst.updateNotNull("color", this.color?.toJson());
     rst.updateNotNull("backgroundColor", this.backgroundColor?.toJson());
+    rst.updateNotNull("fontSize", this.fontSize);
     rst.updateNotNull("fontWeight", this.fontWeight?.toJson());
     rst.updateNotNull("fontStyle", this.fontStyle?.toJson());
+    rst.updateNotNull("letterSpacing", this.letterSpacing);
+    rst.updateNotNull("wordSpacing", this.wordSpacing);
+    rst.updateNotNull("textBaseline", this.textBaseline?.toJson());
+    rst.updateNotNull("height", this.height);
     rst.updateNotNull("decoration", this.decoration?.toJson());
     rst.updateNotNull("decorationColor", this.decorationColor?.toJson());
     rst.updateNotNull("decorationStyle", this.decorationStyle?.toJson());
     rst.updateNotNull("decorationThickness", this.decorationThickness);
-    rst.updateNotNull("height", this.height);
-    rst.updateNotNull("letterSpacing", this.letterSpacing);
+    rst.updateNotNull("fontFamily", this.fontFamily);
+
     return rst;
   }
 }

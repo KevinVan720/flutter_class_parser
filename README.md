@@ -11,13 +11,13 @@ String gradientJson=json.encode(gradient.toJson());
 var gradient2=parseGradient(json.decode(gradientJson));
 ```
 
-## Supported Classes
+## Current Supported Classes
 
 ```
 Color
 BlendMode
 TileMode
-AlignmentGeometry
+Alignment
 BoxFit
 ImageRepeat
 FilterQuality
@@ -25,20 +25,31 @@ StackFit
 FontWeight
 FontStyle
 Axis
+AxisDirection
 TextDecoration
 TextDecorationStyle
 Clip
 Curve
+TextOverflow
+TextDirection
 TextAlign
+TextBaseline
+FontWeight
+EdgeInsetsGeometry
 MainAxisAlignment
 CrossAxisAlignment
 WrapAlignment
 WrapCrossAlignment
+MainAxisSize
+VerticalDirection
+BorderStyle
 Offset
 Size
 Rect
 Radius
 BorderRadius
+Matrix4
+SystemMouseCursor
 Gradient
 ColorFilter
 DecorationImage
@@ -46,7 +57,7 @@ BoxDecoration
 TextStyle
 ```
 
-Some class parsing is not fully supported yet. For example,
-the Curve class parsing only supports some of the predefined curves.
+Some class parsing are not fully supported yet. For example,
+the Curve class parsing only supports the predefined curves.
 
-You can more than welcome to contribute and add more classes to the collection.
+You are more than welcomed to contribute and add more classes to the collection.

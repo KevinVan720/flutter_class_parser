@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'to_json.dart';
 
 //I can make parsing be extension methods on String and Map<String, dynamic>, but that would require
@@ -170,7 +171,7 @@ TextDecorationStyle? parseTextDecorationStyle(String? string) {
   return rst;
 }
 
-Clip? parseClipBehavior(String? string) {
+Clip? parseClip(String? string) {
   Clip? rst;
   Clip.values.forEach((element) {
     if (string == element.toJson()) {
@@ -289,6 +290,26 @@ TextDirection? parseTextDirection(String? string) {
   return rst;
 }
 
+TextAlign? parseTextAlign(String? string) {
+  TextAlign? rst;
+  TextAlign.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
+}
+
+TextBaseline? parseTextBaseline(String? string) {
+  TextBaseline? rst;
+  TextBaseline.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
+}
+
 ///sorta like an enum
 FontWeight? parseFontWeight(String? string) {
   FontWeight? rst;
@@ -353,15 +374,7 @@ WrapCrossAlignment? parseWrapCrossAlignment(String? string) {
   return rst;
 }
 
-TextAlign? parseTextAlign(String? string) {
-  TextAlign? rst;
-  TextAlign.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+
 
 MainAxisSize? parseMainAxisSize(String? string) {
   MainAxisSize? rst;
@@ -373,15 +386,7 @@ MainAxisSize? parseMainAxisSize(String? string) {
   return rst;
 }
 
-TextBaseline? parseTextBaseline(String? string) {
-  TextBaseline? rst;
-  TextBaseline.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+
 
 VerticalDirection? parseVerticalDirection(String? string) {
   VerticalDirection? rst;
@@ -424,6 +429,90 @@ BorderRadius? parseBorderRadius(Map<String, dynamic>? map) {
     bottomLeft: bottomLeft ?? Radius.zero,
     bottomRight: bottomRight ?? Radius.zero,
   );
+}
+
+Matrix4? parseMatrix4(dynamic? list) {
+  if (list == null) return null;
+  List<double> storage = (list as List).cast<double>();
+  return Matrix4.fromList(storage);
+}
+
+SystemMouseCursor? parseSystemMouseCursor(String? string) {
+  if (string == "basic") {
+    return SystemMouseCursors.basic;
+  } else if (string == "click") {
+    return SystemMouseCursors.click;
+  } else if (string == "none") {
+    return SystemMouseCursors.none;
+  } else if (string == "forbidden") {
+    return SystemMouseCursors.forbidden;
+  } else if (string == "wait") {
+    return SystemMouseCursors.wait;
+  } else if (string == "progress") {
+    return SystemMouseCursors.progress;
+  } else if (string == "contextMenu") {
+    return SystemMouseCursors.contextMenu;
+  } else if (string == "help") {
+    return SystemMouseCursors.help;
+  } else if (string == "text") {
+    return SystemMouseCursors.text;
+  } else if (string == "verticalText") {
+    return SystemMouseCursors.verticalText;
+  } else if (string == "cell") {
+    return SystemMouseCursors.cell;
+  } else if (string == "precise") {
+    return SystemMouseCursors.precise;
+  } else if (string == "move") {
+    return SystemMouseCursors.move;
+  } else if (string == "grab") {
+    return SystemMouseCursors.grab;
+  } else if (string == "grabbing") {
+    return SystemMouseCursors.grabbing;
+  } else if (string == "noDrop") {
+    return SystemMouseCursors.noDrop;
+  } else if (string == "alias") {
+    return SystemMouseCursors.alias;
+  } else if (string == "copy") {
+    return SystemMouseCursors.copy;
+  } else if (string == "disappearing") {
+    return SystemMouseCursors.disappearing;
+  } else if (string == "allScroll") {
+    return SystemMouseCursors.allScroll;
+  } else if (string == "resizeLeftRight") {
+    return SystemMouseCursors.resizeLeftRight;
+  } else if (string == "resizeUpDown") {
+    return SystemMouseCursors.resizeUpDown;
+  } else if (string == "resizeUpLeftDownRight") {
+    return SystemMouseCursors.resizeUpLeftDownRight;
+  } else if (string == "resizeUpRightDownLeft") {
+    return SystemMouseCursors.resizeUpRightDownLeft;
+  } else if (string == "resizeUp") {
+    return SystemMouseCursors.resizeUp;
+  } else if (string == "resizeDown") {
+    return SystemMouseCursors.resizeDown;
+  } else if (string == "resizeLeft") {
+    return SystemMouseCursors.resizeLeft;
+  } else if (string == "resizeRight") {
+    return SystemMouseCursors.resizeRight;
+  } else if (string == "resizeUpLeft") {
+    return SystemMouseCursors.resizeUpLeft;
+  } else if (string == "resizeUpRight") {
+    return SystemMouseCursors.resizeUpRight;
+  } else if (string == "resizeDownLeft") {
+    return SystemMouseCursors.resizeDownLeft;
+  } else if (string == "resizeDownRight") {
+    return SystemMouseCursors.resizeDownRight;
+  } else if (string == "resizeColumn") {
+    return SystemMouseCursors.resizeColumn;
+  } else if (string == "resizeRow") {
+    return SystemMouseCursors.resizeRow;
+  } else if (string == "zoomIn") {
+    return SystemMouseCursors.zoomIn;
+  } else if (string == "zoomOut") {
+    return SystemMouseCursors.zoomOut;
+  } else {
+    return null;
+  }
 }
 
 Offset? parseOffset(Map<String, dynamic>? map) {

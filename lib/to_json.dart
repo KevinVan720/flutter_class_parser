@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_class_parser/parse_json.dart';
 
 extension MapExtension<K, V> on Map<K, V> {
@@ -255,6 +256,92 @@ extension VerticalDirectionToJson on VerticalDirection {
 extension BorderStyleToJson on BorderStyle {
   String toJson() {
     return this.toString().stripFirstDot();
+  }
+}
+
+extension Matrix4ToJson on Matrix4 {
+  List<double> toJson() {
+    return this.storage.toList();
+  }
+}
+
+extension SystemMouseCursorsToJson on SystemMouseCursor {
+  String toJson() {
+    if (this == SystemMouseCursors.basic) {
+      return "basic";
+    } else if (this == SystemMouseCursors.click) {
+      return "click";
+    } else if (this == SystemMouseCursors.none) {
+      return "none";
+    } else if (this == SystemMouseCursors.forbidden) {
+      return "forbidden";
+    } else if (this == SystemMouseCursors.wait) {
+      return "wait";
+    } else if (this == SystemMouseCursors.progress) {
+      return "progress";
+    } else if (this == SystemMouseCursors.contextMenu) {
+      return "contextMenu";
+    } else if (this == SystemMouseCursors.help) {
+      return "help";
+    } else if (this == SystemMouseCursors.text) {
+      return "text";
+    } else if (this == SystemMouseCursors.verticalText) {
+      return "verticalText";
+    } else if (this == SystemMouseCursors.cell) {
+      return "cell";
+    } else if (this == SystemMouseCursors.precise) {
+      return "precise";
+    } else if (this == SystemMouseCursors.move) {
+      return "move";
+    } else if (this == SystemMouseCursors.grab) {
+      return "grab";
+    } else if (this == SystemMouseCursors.grabbing) {
+      return "grabbing";
+    } else if (this == SystemMouseCursors.noDrop) {
+      return "noDrop";
+    } else if (this == SystemMouseCursors.alias) {
+      return "alias";
+    } else if (this == SystemMouseCursors.copy) {
+      return "copy";
+    } else if (this == SystemMouseCursors.disappearing) {
+      return "disappearing";
+    } else if (this == SystemMouseCursors.allScroll) {
+      return "allScroll";
+    } else if (this == SystemMouseCursors.resizeLeftRight) {
+      return "resizeLeftRight";
+    } else if (this == SystemMouseCursors.resizeUpDown) {
+      return "resizeUpDown";
+    } else if (this == SystemMouseCursors.resizeUpLeftDownRight) {
+      return "resizeUpLeftDownRight";
+    } else if (this == SystemMouseCursors.resizeUpRightDownLeft) {
+      return "resizeUpRightDownLeft";
+    } else if (this == SystemMouseCursors.resizeUp) {
+      return "resizeUp";
+    } else if (this == SystemMouseCursors.resizeDown) {
+      return "resizeDown";
+    } else if (this == SystemMouseCursors.resizeLeft) {
+      return "resizeLeft";
+    } else if (this == SystemMouseCursors.resizeRight) {
+      return "resizeRight";
+    } else if (this == SystemMouseCursors.resizeUpLeft) {
+      return "resizeUpLeft";
+    } else if (this == SystemMouseCursors.resizeUpRight) {
+      return "resizeUpRight";
+    } else if (this == SystemMouseCursors.resizeDownLeft) {
+      return "resizeDownLeft";
+    } else if (this == SystemMouseCursors.resizeDownRight) {
+      return "resizeDownRight";
+    } else if (this == SystemMouseCursors.resizeColumn) {
+      return "resizeColumn";
+    } else if (this == SystemMouseCursors.resizeRow) {
+      return "resizeRow";
+    } else if (this == SystemMouseCursors.zoomIn) {
+      return "zoomIn";
+    } else if (this == SystemMouseCursors.zoomOut) {
+      return "zoomOut";
+    } else {
+      return "";
+    }
   }
 }
 

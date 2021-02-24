@@ -78,6 +78,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
     debugPrint(parseMainAxisAlignment(json.decode(json.encode(MainAxisAlignment.center.toJson()))).toString());
 
+    debugPrint(parseMatrix4(json.decode(json.encode(Matrix4.identity().toJson()))).toString());
+
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by

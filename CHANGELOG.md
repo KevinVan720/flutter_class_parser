@@ -33,3 +33,7 @@ Redo enum and Curve parsing.
 ## [0.0.9].
 
 MouseCursor and Matrix4.
+
+## [0.1.0].
+
+Fix int to double conversion

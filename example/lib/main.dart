@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_class_parser/to_json.dart';
 import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:flutter_class_parser/parse_json.dart';
+import 'package:flutter_class_parser/to_json.dart';
 
 void main() {
   runApp(MyApp());
@@ -74,11 +75,25 @@ class _MyHomePageState extends State<MyHomePage> {
         parseAlignment(json.decode(json.encode(Alignment.bottomLeft.toJson())))
             .toString());
 
-    debugPrint(parseFontWeight(json.decode(json.encode(FontWeight.w100.toJson()))).toString());
+    debugPrint(
+        parseFontWeight(json.decode(json.encode(FontWeight.w100.toJson())))
+            .toString());
 
-    debugPrint(parseMainAxisAlignment(json.decode(json.encode(MainAxisAlignment.center.toJson()))).toString());
+    debugPrint(parseMainAxisAlignment(
+            json.decode(json.encode(MainAxisAlignment.center.toJson())))
+        .toString());
 
-    debugPrint(parseMatrix4(json.decode(json.encode(Matrix4.identity().toJson()))).toString());
+    debugPrint(
+        parseMatrix4(json.decode(json.encode(Matrix4.identity().toJson())))
+            .toString());
+
+    debugPrint(
+        parseSize(json.decode(json.encode(Size(1, 2).toJson()))).toString());
+
+    debugPrint(parseSize({
+      "width": 1,
+      "height": 2,
+    }).toString());
 
     return Scaffold(
       appBar: AppBar(

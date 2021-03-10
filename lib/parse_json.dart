@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+
 import 'to_json.dart';
 
 //I can make parsing be extension methods on String and Map<String, dynamic>, but that would require
@@ -14,7 +15,7 @@ extension stringParsingExtension on String {
 
 Color? parseColor(String? string) {
   if (string == null) return null;
-  int colorInt = int.parse(string, radix: 16);
+  int colorInt = int.tryParse(string, radix: 16) ?? 0xFFFFFFFF;
   return Color(colorInt);
 }
 
@@ -322,7 +323,6 @@ FontWeight? parseFontWeight(String? string) {
 }
 
 EdgeInsetsGeometry? parseEdgeInsetsGeometry(String? string) {
-  //left,top,right,bottom
   if (string == null || string.trim() == '') {
     return null;
   }
@@ -374,8 +374,6 @@ WrapCrossAlignment? parseWrapCrossAlignment(String? string) {
   return rst;
 }
 
-
-
 MainAxisSize? parseMainAxisSize(String? string) {
   MainAxisSize? rst;
   MainAxisSize.values.forEach((element) {
@@ -385,8 +383,6 @@ MainAxisSize? parseMainAxisSize(String? string) {
   });
   return rst;
 }
-
-
 
 VerticalDirection? parseVerticalDirection(String? string) {
   VerticalDirection? rst;
@@ -412,8 +408,8 @@ BorderStyle? parseBorderStyle(String? string) {
 
 Radius? parseRadius(Map<String, dynamic>? map) {
   if (map == null) return null;
-  double x = map["x"];
-  double y = map["y"];
+  double x = map["x"].toDouble();
+  double y = map["y"].toDouble();
   return Radius.elliptical(x, y);
 }
 
@@ -517,24 +513,24 @@ SystemMouseCursor? parseSystemMouseCursor(String? string) {
 
 Offset? parseOffset(Map<String, dynamic>? map) {
   if (map == null) return null;
-  double dx = map["dx"];
-  double dy = map["dy"];
+  double dx = map["dx"].toDouble();
+  double dy = map["dy"].toDouble();
   return Offset(dx, dy);
 }
 
 Size? parseSize(Map<String, dynamic>? map) {
   if (map == null) return null;
-  double width = map["width"];
-  double height = map["height"];
+  double width = map["width"].toDouble();
+  double height = map["height"].toDouble();
   return Size(width, height);
 }
 
 Rect? parseRect(Map<String, dynamic>? map) {
   if (map == null) return null;
-  double left = map["left"];
-  double right = map["right"];
-  double top = map["top"];
-  double bottom = map["bottom"];
+  double left = map["left"].toDouble();
+  double right = map["right"].toDouble();
+  double top = map["top"].toDouble();
+  double bottom = map["bottom"].toDouble();
   return Rect.fromLTRB(left, top, right, bottom);
 }
 
@@ -560,7 +556,6 @@ DecorationImage? parseDecorationImage(Map<String, dynamic>? map) {
 
 Gradient? parseGradient(Map<String, dynamic>? map) {
   if (map == null) return null;
-  print(map);
   List<Color> colors = (map["colors"] as List)
       .map((e) => parseColor(e) ?? Colors.white)
       .toList();
@@ -568,7 +563,7 @@ Gradient? parseGradient(Map<String, dynamic>? map) {
   TileMode tileMode = parseTileMode(map["tileMode"]) ?? TileMode.clamp;
   if (map["type"] == "RadialGradient") {
     Alignment center = parseAlignment(map["center"]) ?? Alignment.center;
-    double radius = map["radius"];
+    double radius = map["radius"].toDouble();
     return RadialGradient(
         center: center,
         radius: radius,
@@ -577,8 +572,8 @@ Gradient? parseGradient(Map<String, dynamic>? map) {
         tileMode: tileMode);
   } else if (map["type"] == "SweepGradient") {
     Alignment center = parseAlignment(map["center"]) ?? Alignment.center;
-    double startAngle = map["startAngle"];
-    double endAngle = map["endAngle"];
+    double startAngle = map["startAngle"].toDouble();
+    double endAngle = map["endAngle"].toDouble();
     return SweepGradient(
         center: center,
         startAngle: startAngle,
@@ -612,7 +607,7 @@ TextStyle? parseTextStyle(Map<String, dynamic>? map) {
   Color? color = parseColor(map['color']);
   Color? backgroundColor = parseColor(map['backgroundColor']);
   String? fontFamily = map['fontFamily'];
-  double fontSize = map['fontSize'];
+  double fontSize = map['fontSize'].toDouble();
   FontStyle? fontStyle =
       'italic' == map['fontStyle'] ? FontStyle.italic : FontStyle.normal;
   FontWeight? fontWeight = parseFontWeight(map['fontWeight']);
@@ -620,9 +615,9 @@ TextStyle? parseTextStyle(Map<String, dynamic>? map) {
   Color? decorationColor = parseColor(map["decorationColor"]);
   TextDecorationStyle? decorationStyle =
       parseTextDecorationStyle(map['decorationStyle']);
-  double? decorationThickness = map['decorationThickness'];
-  double? height = map['height'];
-  double? letterSpacing = map['letterSpacing'];
+  double? decorationThickness = map['decorationThickness'].toDouble();
+  double? height = map['height'].toDouble();
+  double? letterSpacing = map['letterSpacing'].toDouble();
 
   return TextStyle(
     height: height,

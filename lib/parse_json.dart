@@ -559,7 +559,8 @@ Gradient? parseGradient(Map<String, dynamic>? map) {
   List<Color> colors = (map["colors"] as List)
       .map((e) => parseColor(e) ?? Colors.white)
       .toList();
-  List<double>? stops = map["stops"]?.cast<double>();
+  List<double>? stops =
+      (map["stops"] as List?)?.map((e) => e.toDouble()).toList().cast<double>();
   TileMode tileMode = parseTileMode(map["tileMode"]) ?? TileMode.clamp;
   if (map["type"] == "RadialGradient") {
     Alignment center = parseAlignment(map["center"]) ?? Alignment.center;

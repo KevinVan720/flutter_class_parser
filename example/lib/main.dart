@@ -68,8 +68,18 @@ class _MyHomePageState extends State<MyHomePage> {
     debugPrint(parseBoxDecoration(json.decode(json.encode(BoxDecoration(
             gradient: LinearGradient(
                 begin: Alignment(0.1, 0.2),
+                stops: [0, 1],
                 colors: [Colors.amber, Colors.red])).toJson())))
         .toString());
+
+    debugPrint(parseGradient({
+      "stops": [0, 1],
+      "colors": ["ffff5252", "ff69f0ae"],
+      "type": "LinearGradient",
+      "begin": "topCenter",
+      "end": "bottomCenter",
+      "tileMode": "clamp"
+    }).toString());
 
     debugPrint(
         parseAlignment(json.decode(json.encode(Alignment.bottomLeft.toJson())))

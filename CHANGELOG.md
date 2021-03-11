@@ -37,3 +37,11 @@ MouseCursor and Matrix4.
 ## [0.1.0].
 
 Fix int to double conversion
+
+## [0.1.1].
+
+Update SDK dependence
+
+## [0.1.2].
+
+Fix int to double conversion

@@ -45,3 +45,7 @@ Update SDK dependence
 ## [0.1.2].
 
 Fix int to double conversion
+
+## [0.1.3].
+
+Image provider parsing

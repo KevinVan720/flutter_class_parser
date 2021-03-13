@@ -438,13 +438,34 @@ extension ColorFilterToJsonExtension on ColorFilter {
     Map<String, dynamic> rst = {};
     String temp = this.toString();
     //assume color filter is in mode type
-    List<String> filtermode =
-        temp.substring(temp.indexOf("("), temp.lastIndexOf((")"))).split(",");
-    String colorString = filtermode[0];
-    colorString = colorString.substring(
-        colorString.lastIndexOf("(0x") + 3, colorString.indexOf(")"));
-    rst["color"] = colorString;
-    rst["mode"] = filtermode[1].stripFirstDot();
+    //can not get _matrix, only parse the mode type
+    if (temp.contains("mode")) {
+      List<String> filtermode =
+          temp.substring(temp.indexOf("("), temp.lastIndexOf((")"))).split(",");
+      String colorString = filtermode[0];
+      colorString = colorString.substring(
+          colorString.lastIndexOf("(0x") + 3, colorString.indexOf(")"));
+      rst["color"] = colorString;
+      rst["mode"] = filtermode[1].stripFirstDot();
+    }
+
+    return rst;
+  }
+}
+
+extension ImageProviderToJsonExtension on ImageProvider {
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> rst = {};
+    if (this is NetworkImage) {
+      rst["type"] = "NetworkImage";
+      rst["url"] = (this as NetworkImage).url;
+      rst["scale"] = (this as NetworkImage).scale;
+    }
+    if (this is AssetImage) {
+      rst["type"] = "AssetImage";
+      rst["assetName"] = (this as AssetImage).assetName;
+      rst["package"] = (this as AssetImage).package;
+    }
     return rst;
   }
 }
@@ -452,10 +473,13 @@ extension ColorFilterToJsonExtension on ColorFilter {
 extension DecorationImageToJsonExtension on DecorationImage {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};
+    rst.updateNotNull("image", this.image.toJson());
+    rst.updateNotNull("colorFilter", this.colorFilter?.toJson());
     rst.updateNotNull("fit", this.fit?.toJson());
     rst.updateNotNull("alignment", (this.alignment as Alignment).toJson());
-    rst.updateNotNull("colorFilter", this.colorFilter?.toJson());
-    rst.updateNotNull("url", (this.image as NetworkImage).url);
+    rst.updateNotNull("repeat", this.repeat.toJson());
+    rst.updateNotNull("scale", scale);
+
     return rst;
   }
 }

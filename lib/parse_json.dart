@@ -536,22 +536,39 @@ Rect? parseRect(Map<String, dynamic>? map) {
 
 ColorFilter? parseColorFilter(Map<String, dynamic>? map) {
   if (map == null) return null;
-  Color color = parseColor(map["color"]) ?? Colors.white;
-  BlendMode mode = parseBlendMode(map["mode"]) ?? BlendMode.clear;
+  Color color = parseColor(map["color"]) ?? Colors.transparent;
+  BlendMode mode = parseBlendMode(map["mode"]) ?? BlendMode.src;
   return ColorFilter.mode(color, mode);
+}
+
+//TODO: add more providers here
+ImageProvider? parseImageProvider(Map<String, dynamic>? map) {
+  if (map == null) return null;
+  if (map["type"] == "NetworkImage") {
+    return NetworkImage(map["url"], scale: map["scale"]);
+  }
+  if (map["type"] == "AssetImage") {
+    return AssetImage(map["assetName"], package: map["package"]);
+  }
 }
 
 DecorationImage? parseDecorationImage(Map<String, dynamic>? map) {
   if (map == null) return null;
-  String url = map["url"];
+  ImageProvider? image = parseImageProvider(map["image"]);
   ColorFilter? colorFilter = parseColorFilter(map["colorFilter"]);
   BoxFit? fit = parseBoxFit(map["fit"]);
-  Alignment alignment = parseAlignment(map["alignment"]) ?? Alignment.topLeft;
+  Alignment alignment = parseAlignment(map["alignment"]) ?? Alignment.center;
+  ImageRepeat repeat = parseImageRepeat(map["repeat"]) ?? ImageRepeat.noRepeat;
+  double scale = (map["scale"] ?? 1.0).toDouble();
+
+  if (image == null) return null;
   return DecorationImage(
-      image: NetworkImage(url),
+      image: image,
       fit: fit,
       alignment: alignment,
-      colorFilter: colorFilter);
+      colorFilter: colorFilter,
+      repeat: repeat,
+      scale: scale);
 }
 
 Gradient? parseGradient(Map<String, dynamic>? map) {

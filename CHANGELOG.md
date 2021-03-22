@@ -49,3 +49,11 @@ Fix int to double conversion
 ## [0.1.3].
 
 Image provider parsing
+
+## [0.1.4].
+
+ImageFilter parsing
+
+## [0.1.5].
+
+StrokeJoin, StrokeCap parsing

@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_class_parser/parse_json.dart';
 
@@ -259,6 +262,18 @@ extension BorderStyleToJson on BorderStyle {
   }
 }
 
+extension StrokeJoinToJson on StrokeJoin {
+  String toJson() {
+    return this.toString().stripFirstDot();
+  }
+}
+
+extension StrokeCapToJson on StrokeCap {
+  String toJson() {
+    return this.toString().stripFirstDot();
+  }
+}
+
 extension Matrix4ToJson on Matrix4 {
   List<double> toJson() {
     return this.storage.toList();
@@ -433,20 +448,43 @@ extension GradientToJsonExtension on Gradient {
   }
 }
 
+extension ImageFilterToJson on ImageFilter {
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> rst = {};
+    String temp = this.toString();
+    if (temp.contains("ImageFilter.blur")) {
+      List<String> data = temp
+          .substring(temp.indexOf("(") + 1, temp.lastIndexOf((")")))
+          .split(",");
+      rst["sigmaX"] = double.tryParse(data[0]) ?? 0;
+      rst["sigmaY"] = double.tryParse(data[1]) ?? 0;
+      rst["tileMode"] = data[2];
+      rst["type"] = "ImageFilter";
+      return rst;
+    }
+    if (temp.contains("ColorFilter.mode")) {
+      rst = (this as ColorFilter).toJson();
+    }
+    return rst;
+  }
+}
+
 extension ColorFilterToJsonExtension on ColorFilter {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};
     String temp = this.toString();
-    //assume color filter is in mode type
-    //can not get _matrix, only parse the mode type
+
+    ///assume color filter is in mode type
+    ///can not get _matrix, only parse the mode type
     if (temp.contains("mode")) {
-      List<String> filtermode =
+      List<String> data =
           temp.substring(temp.indexOf("("), temp.lastIndexOf((")"))).split(",");
-      String colorString = filtermode[0];
+      String colorString = data[0];
       colorString = colorString.substring(
           colorString.lastIndexOf("(0x") + 3, colorString.indexOf(")"));
       rst["color"] = colorString;
-      rst["mode"] = filtermode[1].stripFirstDot();
+      rst["mode"] = data[1].stripFirstDot();
+      rst["type"] = "ColorFilter";
     }
 
     return rst;

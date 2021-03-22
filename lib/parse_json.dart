@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -404,6 +407,26 @@ BorderStyle? parseBorderStyle(String? string) {
   return rst;
 }
 
+StrokeJoin? parseStrokeJoin(String? string) {
+  StrokeJoin? rst;
+  StrokeJoin.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
+}
+
+StrokeCap? parseStrokeCap(String? string) {
+  StrokeCap? rst;
+  StrokeCap.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
+}
+
 ///Up till this point all parsing should be 1 level. Directly parsing a string.
 
 Radius? parseRadius(Map<String, dynamic>? map) {
@@ -532,6 +555,21 @@ Rect? parseRect(Map<String, dynamic>? map) {
   double top = map["top"].toDouble();
   double bottom = map["bottom"].toDouble();
   return Rect.fromLTRB(left, top, right, bottom);
+}
+
+ImageFilter? parseImageFilter(Map<String, dynamic>? map) {
+  if (map == null) return null;
+  if (map["type"] == "ImageFilter") {
+    if (map.containsKey("sigmaX")) {
+      return ImageFilter.blur(
+          sigmaX: map["sigmaX"]?.toDouble() ?? 0,
+          sigmaY: map["sigmaY"]?.toDouble() ?? 0,
+          tileMode: parseTileMode(map["tileMode"]) ?? TileMode.clamp);
+    }
+  }
+  if (map["type"] == "ColorFilter") {
+    return parseColorFilter(map);
+  }
 }
 
 ColorFilter? parseColorFilter(Map<String, dynamic>? map) {

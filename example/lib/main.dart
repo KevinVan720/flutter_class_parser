@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_class_parser/parse_json.dart';
 import 'package:flutter_class_parser/to_json.dart';
 
@@ -54,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     BoxDecoration decoration = BoxDecoration(
         image: DecorationImage(
+            colorFilter: ColorFilter.mode(Colors.red, BlendMode.color),
             image: NetworkImage(
                 "https://images.unsplash.com/photo-1594482628012-b4276773c61a?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1334&q=80")),
         gradient: LinearGradient(
@@ -62,6 +65,10 @@ class _MyHomePageState extends State<MyHomePage> {
             colors: [Colors.amber, Colors.red]));
     debugPrint(parseBoxDecoration(json.decode(json.encode(decoration.toJson())))
         .toString());
+
+    print(ColorFilter.mode(Colors.red, BlendMode.color).toJson());
+    print(parseImageFilter(json.decode(
+        json.encode(ColorFilter.mode(Colors.red, BlendMode.color).toJson()))));
 
     debugPrint(parseGradient({
       "stops": [0, 1],

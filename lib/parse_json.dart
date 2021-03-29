@@ -557,6 +557,15 @@ Rect? parseRect(Map<String, dynamic>? map) {
   return Rect.fromLTRB(left, top, right, bottom);
 }
 
+EdgeInsets? parseEdgeInsets(Map<String, dynamic>? map) {
+  if (map == null) return null;
+  double left = map["left"].toDouble();
+  double right = map["right"].toDouble();
+  double top = map["top"].toDouble();
+  double bottom = map["bottom"].toDouble();
+  return EdgeInsets.only(left: left, top: top, right: right, bottom: bottom);
+}
+
 ImageFilter? parseImageFilter(Map<String, dynamic>? map) {
   if (map == null) return null;
   if (map["type"] == "ImageFilter") {
@@ -607,6 +616,15 @@ DecorationImage? parseDecorationImage(Map<String, dynamic>? map) {
       colorFilter: colorFilter,
       repeat: repeat,
       scale: scale);
+}
+
+Shadow? parseShadow(Map<String, dynamic>? map) {
+  if (map == null) return null;
+  Color color = parseColor(map["color"]) ?? Colors.transparent;
+  Offset offset = parseOffset(map["offset"]) ?? Offset.zero;
+  double blurRadius = (map["blurRadius"] ?? 0.0).toDouble();
+
+  return Shadow(color: color, offset: offset, blurRadius: blurRadius);
 }
 
 Gradient? parseGradient(Map<String, dynamic>? map) {

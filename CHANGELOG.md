@@ -57,3 +57,7 @@ ImageFilter parsing
 ## [0.1.5].
 
 StrokeJoin, StrokeCap parsing
+
+## [0.1.5].
+
+EdgeInsets, Shadow parsing

@@ -37,7 +37,6 @@ with funtions.
 1. TextAlign
 1. TextBaseline
 1. FontWeight
-1. EdgeInsetsGeometry
 1. MainAxisAlignment
 1. CrossAxisAlignment
 1. WrapAlignment
@@ -50,11 +49,13 @@ with funtions.
 1. Offset
 1. Size
 1. Rect
+1. EdgeInsets
 1. Radius
 1. BorderRadius
 1. Matrix4
 1. SystemMouseCursor
 1. Gradient
+1. Shadow
 1. ImageFilter
 1. ColorFilter
 1. DecorationImage

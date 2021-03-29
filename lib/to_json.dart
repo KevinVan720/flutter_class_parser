@@ -389,6 +389,17 @@ extension RectToJsonExtension on Rect {
   }
 }
 
+extension EdgeInsetsToJsonExtension on EdgeInsets {
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> rst = {};
+    rst["left"] = this.left;
+    rst["right"] = this.right;
+    rst["top"] = this.top;
+    rst["bottom"] = this.bottom;
+    return rst;
+  }
+}
+
 extension RadiusToJsonExtension on Radius {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};
@@ -504,6 +515,16 @@ extension ImageProviderToJsonExtension on ImageProvider {
       rst["assetName"] = (this as AssetImage).assetName;
       rst["package"] = (this as AssetImage).package;
     }
+    return rst;
+  }
+}
+
+extension ShadowToJsonExtension on Shadow {
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> rst = {};
+    rst.updateNotNull("color", color.toJson());
+    rst.updateNotNull("offset", offset.toJson());
+    rst.updateNotNull("blurRadius", blurRadius);
     return rst;
   }
 }

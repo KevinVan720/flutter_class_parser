@@ -58,6 +58,14 @@ ImageFilter parsing
 
 StrokeJoin, StrokeCap parsing
 
-## [0.1.5].
+## [0.1.6].
 
 EdgeInsets, Shadow parsing
+
+## [0.1.7].
+
+EdgeInsets, Shadow parsing
+
+## [0.1.8].
+
+Fix ImageFilter parsing on the web

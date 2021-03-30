@@ -577,7 +577,7 @@ ImageFilter? parseImageFilter(Map<String, dynamic>? map) {
     }
   }
   if (map["type"] == "ColorFilter") {
-    return parseColorFilter(map);
+    return parseColorFilter(map) as ImageFilter?;
   }
 }
 

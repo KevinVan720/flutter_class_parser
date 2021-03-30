@@ -54,6 +54,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    print(Offset.zero.toJson());
+
     BoxDecoration decoration = BoxDecoration(
         image: DecorationImage(
             colorFilter: ColorFilter.mode(Colors.red, BlendMode.color),
@@ -95,8 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
         parseMatrix4(json.decode(json.encode(Matrix4.identity().toJson())))
             .toString());
 
-    debugPrint(
-        parseSize(json.decode(json.encode(Size(1, 2).toJson()))).toString());
+    print(parseSize(json.decode(json.encode(Size(1, 2).toJson()))).toJson());
 
     debugPrint(parseSize({
       "width": 1,

@@ -6,7 +6,9 @@ import 'package:flutter/rendering.dart';
 
 import 'to_json.dart';
 
-//I can make parsing be extension methods on String and Map<String, dynamic>, but that would require
+///Parse string or a map to various built-in UI data classes
+///Functions are all called parse + class name
+///The input and output should all be nullable
 
 extension stringParsingExtension on String {
   String stripFirstDot() {
@@ -185,6 +187,7 @@ Clip? parseClip(String? string) {
   return rst;
 }
 
+///not an enum
 Curve? parseCurve(String? string) {
   switch (string) {
     case "linear":

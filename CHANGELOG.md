@@ -69,3 +69,12 @@ EdgeInsets, Shadow parsing
 ## [0.1.8].
 
 Fix ImageFilter parsing on the web
+
+## [0.1.9].
+
+Code clean up
+
+## [0.2.0].
+
+Code restructure
+

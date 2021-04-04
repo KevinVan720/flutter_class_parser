@@ -3,9 +3,63 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter_class_parser/parse_json.dart';
 
-extension MapExtension<K, V> on Map<K, V> {
+import 'file:///C:/Users/kevin/StudioProjects/flutter_class_parser/lib/src/parse_json.dart';
+
+///Convert various built-in UI data classes to string or a map
+///Methods are all called toJson() for simplification
+
+/*
+extension ObjectToJsonExtension on Object {
+  bool get isJsonType => false;
+
+  dynamic toJson() {
+    return this.toString();
+  }
+}
+
+extension StringToJsonTypeExtension on String {
+  bool get isJsonType => true;
+
+  dynamic toJson() {
+    return this;
+  }
+}
+
+extension boolToJsonTypeExtension on bool {
+  bool get isJsonType => true;
+
+  dynamic toJson() {
+    return this;
+  }
+}
+
+extension numToJsonTypeExtension on num {
+  bool get isJsonType => true;
+
+  dynamic toJson() {
+    return this;
+  }
+}
+
+extension ListToJsonTypeExtension<T> on List<T> {
+  /// Provide access to the generic type at runtime.
+  bool get isJsonType => T.isJsonType;
+
+  dynamic toJson() {
+    return this.map((e) => e?.toJson()).toList();
+  }
+
+}
+*/
+
+///If a parameter is null, don't convert it in the json
+///This saves space. But the corresponding parser should handle null values correctly
+extension MapToJsonTypeExtension<K, V> on Map<K, V> {
+  dynamic toJson() {
+    return this;
+  }
+
   void updateNotNull(K key, V value) {
     if (value != null) this[key] = value;
   }

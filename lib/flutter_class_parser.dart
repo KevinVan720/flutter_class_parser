@@ -1,4 +1,4 @@
 library flutter_class_parser;
 
-export 'to_json.dart';
-export 'parse_json.dart';
+export 'src/parse_json.dart';
+export 'src/to_json.dart';

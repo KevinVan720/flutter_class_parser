@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_class_parser/flutter_class_parser.dart';
 
 ///Convert various built-in UI data classes to string or a map
@@ -23,6 +24,12 @@ extension MapToJsonTypeExtension<K, V> on Map<K, V> {
 extension ColorToJson on Color {
   String toJson() {
     return this.value.toRadixString(16);
+  }
+}
+
+extension OrientationToJson on Orientation {
+  String toJson() {
+    return this.toString().stripFirstDot();
   }
 }
 

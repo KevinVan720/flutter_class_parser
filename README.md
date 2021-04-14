@@ -17,6 +17,7 @@ with funtions.
 ## Current Supported Classes
 
 1. Color
+1. Orientation
 1. BlendMode
 1. TileMode
 1. Alignment

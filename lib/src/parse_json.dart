@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 
 import 'to_json.dart';
 
@@ -22,6 +23,16 @@ Color? parseColor(String? string) {
   if (string == null) return null;
   int colorInt = int.tryParse(string, radix: 16) ?? 0xFFFFFFFF;
   return Color(colorInt);
+}
+
+Orientation? parseOrientation(String? string) {
+  Orientation? rst;
+  Orientation.values.forEach((element) {
+    if (string == element.toJson()) {
+      rst = element;
+    }
+  });
+  return rst;
 }
 
 BlendMode? parseBlendMode(String? string) {

@@ -90,3 +90,7 @@ Update dependence
 
 Orientation parse
 
+## [0.2.4].
+
+Update license.
+

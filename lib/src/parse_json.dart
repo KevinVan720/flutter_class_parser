@@ -464,7 +464,7 @@ BorderRadius? parseBorderRadius(Map<String, dynamic>? map) {
   );
 }
 
-Matrix4? parseMatrix4(dynamic? list) {
+Matrix4? parseMatrix4(dynamic list) {
   if (list == null) return null;
   List<double> storage = (list as List).cast<double>();
   return Matrix4.fromList(storage);
@@ -591,8 +591,9 @@ ImageFilter? parseImageFilter(Map<String, dynamic>? map) {
     }
   }
   if (map["type"] == "ColorFilter") {
-    return parseColorFilter(map) as ImageFilter?;
+    return parseColorFilter(map);
   }
+  return null;
 }
 
 ColorFilter? parseColorFilter(Map<String, dynamic>? map) {
@@ -611,6 +612,7 @@ ImageProvider? parseImageProvider(Map<String, dynamic>? map) {
   if (map["type"] == "AssetImage") {
     return AssetImage(map["assetName"], package: map["package"]);
   }
+  return null;
 }
 
 DecorationImage? parseDecorationImage(Map<String, dynamic>? map) {

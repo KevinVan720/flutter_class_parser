@@ -94,3 +94,7 @@ Orientation parse
 
 Update license.
 
+## [0.2.5].
+
+Update dependency.
+

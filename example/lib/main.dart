@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
         parseMatrix4(json.decode(json.encode(Matrix4.identity().toJson())))
             .toString());
 
-    print(parseSize(json.decode(json.encode(Size(1, 2).toJson()))).toJson());
+    print(parseSize(json.decode(json.encode(Size(1, 2).toJson())))?.toJson());
 
     debugPrint(parseSize({
       "width": 1,

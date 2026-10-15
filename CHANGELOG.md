@@ -98,3 +98,11 @@ Update license.
 
 Update dependency.
 
+## [0.2.6].
+
+Support the latest Flutter stable (3.47).
+Only depend on the Flutter widgets library instead of Material, so the package works with both `package:flutter/material.dart` and the standalone `material_ui` package.
+Fix `ColorFilter.toJson` crashing with the new `Color.toString` format introduced in Flutter 3.27.
+Fix `ImageFilter.blur` tile mode serialization and `parseTextStyle` crashing when `fontSize` or other optional values are missing.
+Replace the deprecated `Color.value` with `Color.toARGB32`.
+Require Flutter 3.27 or higher.

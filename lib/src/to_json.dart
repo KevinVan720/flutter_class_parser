@@ -1,9 +1,7 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_class_parser/flutter_class_parser.dart';
 
 ///Convert various built-in UI data classes to string or a map
@@ -23,7 +21,7 @@ extension MapToJsonTypeExtension<K, V> on Map<K, V> {
 
 extension ColorToJson on Color {
   String toJson() {
-    return this.value.toRadixString(16);
+    return this.toARGB32().toRadixString(16);
   }
 }
 
@@ -485,7 +483,7 @@ extension ImageFilterToJson on ImageFilter {
           .split(",");
       rst["sigmaX"] = double.tryParse(data[0]) ?? 0;
       rst["sigmaY"] = double.tryParse(data[1]) ?? 0;
-      rst["tileMode"] = data[2];
+      rst["tileMode"] = data[2].trim();
       rst["type"] = "ImageFilter";
       return rst;
     }
@@ -503,19 +501,42 @@ extension ColorFilterToJsonExtension on ColorFilter {
 
     ///assume color filter is in mode type
     ///can not get _matrix, only parse the mode type
-    if (temp.contains("mode")) {
-      List<String> data =
-          temp.substring(temp.indexOf("("), temp.lastIndexOf((")"))).split(",");
-      String colorString = data[0];
-      colorString = colorString.substring(
-          colorString.lastIndexOf("(0x") + 3, colorString.indexOf(")"));
-      rst["color"] = colorString;
-      rst["mode"] = data[1].stripFirstDot();
-      rst["type"] = "ColorFilter";
+    if (temp.startsWith("ColorFilter.mode(")) {
+      String? colorString = _colorStringFromDebugString(temp);
+      Match? mode = RegExp(r"BlendMode\.(\w+)").firstMatch(temp);
+      if (colorString != null && mode != null) {
+        rst["color"] = colorString;
+        rst["mode"] = mode.group(1);
+        rst["type"] = "ColorFilter";
+      }
     }
 
     return rst;
   }
+}
+
+///Extract a color (in the same format as [ColorToJson.toJson]) from the
+///toString() output of a class that contains a [Color].
+///Supports both the legacy "Color(0xff2196f3)" format and the
+///"Color(alpha: 1.0000, red: 0.1294, ...)" format used since Flutter 3.27.
+String? _colorStringFromDebugString(String string) {
+  Match? hex = RegExp(r"\(0x([0-9a-fA-F]{1,8})\)").firstMatch(string);
+  if (hex != null) {
+    return int.parse(hex.group(1)!, radix: 16).toRadixString(16);
+  }
+  Match? channels = RegExp(
+          r"alpha: (-?[\d.]+), red: (-?[\d.]+), green: (-?[\d.]+), blue: (-?[\d.]+)")
+      .firstMatch(string);
+  if (channels != null) {
+    int toInt8(String value) =>
+        (double.parse(value) * 255.0).round().clamp(0, 255);
+    int argb = toInt8(channels.group(1)!) << 24 |
+        toInt8(channels.group(2)!) << 16 |
+        toInt8(channels.group(3)!) << 8 |
+        toInt8(channels.group(4)!);
+    return argb.toRadixString(16);
+  }
+  return null;
 }
 
 extension ImageProviderToJsonExtension on ImageProvider {

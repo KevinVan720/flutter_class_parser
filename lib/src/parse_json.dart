@@ -1,9 +1,7 @@
 import 'dart:ui';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 import 'to_json.dart';
 
@@ -598,7 +596,7 @@ ImageFilter? parseImageFilter(Map<String, dynamic>? map) {
 
 ColorFilter? parseColorFilter(Map<String, dynamic>? map) {
   if (map == null) return null;
-  Color color = parseColor(map["color"]) ?? Colors.transparent;
+  Color color = parseColor(map["color"]) ?? const Color(0x00000000);
   BlendMode mode = parseBlendMode(map["mode"]) ?? BlendMode.src;
   return ColorFilter.mode(color, mode);
 }
@@ -636,7 +634,7 @@ DecorationImage? parseDecorationImage(Map<String, dynamic>? map) {
 
 Shadow? parseShadow(Map<String, dynamic>? map) {
   if (map == null) return null;
-  Color color = parseColor(map["color"]) ?? Colors.transparent;
+  Color color = parseColor(map["color"]) ?? const Color(0x00000000);
   Offset offset = parseOffset(map["offset"]) ?? Offset.zero;
   double blurRadius = (map["blurRadius"] ?? 0.0).toDouble();
 
@@ -646,7 +644,7 @@ Shadow? parseShadow(Map<String, dynamic>? map) {
 Gradient? parseGradient(Map<String, dynamic>? map) {
   if (map == null) return null;
   List<Color> colors = (map["colors"] as List)
-      .map((e) => parseColor(e) ?? Colors.white)
+      .map((e) => parseColor(e) ?? const Color(0xFFFFFFFF))
       .toList();
   List<double>? stops =
       (map["stops"] as List?)?.map((e) => e.toDouble()).toList().cast<double>();
@@ -697,7 +695,7 @@ TextStyle? parseTextStyle(Map<String, dynamic>? map) {
   Color? color = parseColor(map['color']);
   Color? backgroundColor = parseColor(map['backgroundColor']);
   String? fontFamily = map['fontFamily'];
-  double fontSize = map['fontSize'].toDouble();
+  double? fontSize = map['fontSize']?.toDouble();
   FontStyle? fontStyle =
       'italic' == map['fontStyle'] ? FontStyle.italic : FontStyle.normal;
   FontWeight? fontWeight = parseFontWeight(map['fontWeight']);
@@ -705,9 +703,9 @@ TextStyle? parseTextStyle(Map<String, dynamic>? map) {
   Color? decorationColor = parseColor(map["decorationColor"]);
   TextDecorationStyle? decorationStyle =
       parseTextDecorationStyle(map['decorationStyle']);
-  double? decorationThickness = map['decorationThickness'].toDouble();
-  double? height = map['height'].toDouble();
-  double? letterSpacing = map['letterSpacing'].toDouble();
+  double? decorationThickness = map['decorationThickness']?.toDouble();
+  double? height = map['height']?.toDouble();
+  double? letterSpacing = map['letterSpacing']?.toDouble();
 
   return TextStyle(
     height: height,

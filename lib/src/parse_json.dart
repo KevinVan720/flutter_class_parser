@@ -1,21 +1,34 @@
+import 'dart:math' as math;
 import 'dart:ui';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
+import 'named_values.dart';
 import 'to_json.dart';
 
 ///Parse string or a map to various built-in UI data classes
 ///Functions are all called parse + class name
 ///The input and output should all be nullable
 
+// The name is part of the public API, so it is kept for compatibility.
+// ignore: camel_case_extensions
 extension stringParsingExtension on String {
   String stripFirstDot() {
-    int index = this.indexOf('.') + 1;
-    index = index == 0 ? 0 : index;
-    return this.substring(index);
+    return substring(indexOf('.') + 1);
   }
 }
+
+///Returns the enum value named [string], or null if there is none.
+T? _parseEnum<T extends Enum>(List<T> values, String? string) {
+  for (T value in values) {
+    if (value.name == string) return value;
+  }
+  return null;
+}
+
+///Reads a JSON number, which can be an int or a double, as a double.
+double? _toDouble(dynamic value) => (value as num?)?.toDouble();
 
 Color? parseColor(String? string) {
   if (string == null) return null;
@@ -23,325 +36,134 @@ Color? parseColor(String? string) {
   return Color(colorInt);
 }
 
-Orientation? parseOrientation(String? string) {
-  Orientation? rst;
-  Orientation.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+Orientation? parseOrientation(String? string) =>
+    _parseEnum(Orientation.values, string);
 
-BlendMode? parseBlendMode(String? string) {
-  BlendMode? rst;
-  BlendMode.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+BlendMode? parseBlendMode(String? string) =>
+    _parseEnum(BlendMode.values, string);
 
-TileMode? parseTileMode(String? string) {
-  TileMode? rst;
-  TileMode.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+TileMode? parseTileMode(String? string) => _parseEnum(TileMode.values, string);
 
 ///not an enum
+///Parses the names of the predefined alignments, for example "topLeft", and
+///"(x, y)" for other alignments.
 Alignment? parseAlignment(String? string) {
-  Alignment? alignment;
+  if (string == null) return null;
   switch (string) {
     case 'topLeft':
-      alignment = Alignment.topLeft;
-      break;
+      return Alignment.topLeft;
     case 'topCenter':
-      alignment = Alignment.topCenter;
-      break;
+      return Alignment.topCenter;
     case 'topRight':
-      alignment = Alignment.topRight;
-      break;
+      return Alignment.topRight;
     case 'centerLeft':
-      alignment = Alignment.centerLeft;
-      break;
+      return Alignment.centerLeft;
     case 'center':
-      alignment = Alignment.center;
-      break;
+      return Alignment.center;
     case 'centerRight':
-      alignment = Alignment.centerRight;
-      break;
+      return Alignment.centerRight;
     case 'bottomLeft':
-      alignment = Alignment.bottomLeft;
-      break;
+      return Alignment.bottomLeft;
     case 'bottomCenter':
-      alignment = Alignment.bottomCenter;
-      break;
+      return Alignment.bottomCenter;
     case 'bottomRight':
-      alignment = Alignment.bottomRight;
-      break;
-
-    default:
-      {
-        if (string != null) {
-          List<String> aligns = string
-              .substring(string.indexOf("(") + 1, string.indexOf(")"))
-              .split(",");
-          alignment =
-              Alignment(double.parse(aligns[0]), double.parse(aligns[1]));
-        }
-      }
-      break;
+      return Alignment.bottomRight;
   }
-  return alignment;
+
+  int start = string.indexOf("(");
+  int end = string.indexOf(")", start + 1);
+  if (start < 0 || end < 0) return null;
+  List<String> aligns = string.substring(start + 1, end).split(",");
+  if (aligns.length < 2) return null;
+  double? x = double.tryParse(aligns[0]);
+  double? y = double.tryParse(aligns[1]);
+  if (x == null || y == null) return null;
+  return Alignment(x, y);
 }
 
-BoxFit? parseBoxFit(String? string) {
-  BoxFit? rst;
-  BoxFit.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+BoxFit? parseBoxFit(String? string) => _parseEnum(BoxFit.values, string);
 
-ImageRepeat? parseImageRepeat(String? string) {
-  ImageRepeat? rst;
-  ImageRepeat.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+ImageRepeat? parseImageRepeat(String? string) =>
+    _parseEnum(ImageRepeat.values, string);
 
-FilterQuality? parseFilterQuality(String? string) {
-  FilterQuality? rst;
-  FilterQuality.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+FilterQuality? parseFilterQuality(String? string) =>
+    _parseEnum(FilterQuality.values, string);
 
-StackFit? parseStackFit(String? string) {
-  StackFit? rst;
-  StackFit.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+StackFit? parseStackFit(String? string) => _parseEnum(StackFit.values, string);
 
-Axis? parseAxis(String? string) {
-  Axis? rst;
-  Axis.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+FontStyle? parseFontStyle(String? string) =>
+    _parseEnum(FontStyle.values, string);
 
-AxisDirection? parseAxisDirection(String? string) {
-  AxisDirection? rst;
-  AxisDirection.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+Axis? parseAxis(String? string) => _parseEnum(Axis.values, string);
+
+AxisDirection? parseAxisDirection(String? string) =>
+    _parseEnum(AxisDirection.values, string);
 
 ///not an enum
+///Parses a single decoration, for example "underline", or a combined one, for
+///example "combine([underline, lineThrough])".
 TextDecoration? parseTextDecoration(String? string) {
-  switch (string) {
-    case "none":
-      return TextDecoration.none;
-    case "underline":
-      return TextDecoration.underline;
-    case "lineThrough":
-      return TextDecoration.lineThrough;
-    case "overline":
-      return TextDecoration.overline;
-    default:
-      return null;
+  if (string == null) return null;
+  if (string == "none") return TextDecoration.none;
+  TextDecoration? decoration = textDecorationsByName[string];
+  if (decoration != null) return decoration;
+
+  Match? combined = RegExp(r"^combine\(\[(.*)\]\)$").firstMatch(string);
+  if (combined == null) return null;
+  List<TextDecoration> decorations = [];
+  for (String name in combined.group(1)!.split(",")) {
+    TextDecoration? decoration = textDecorationsByName[name.trim()];
+    if (decoration == null) return null;
+    decorations.add(decoration);
   }
+  return TextDecoration.combine(decorations);
 }
 
-TextDecorationStyle? parseTextDecorationStyle(String? string) {
-  TextDecorationStyle? rst;
-  TextDecorationStyle.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+TextDecorationStyle? parseTextDecorationStyle(String? string) =>
+    _parseEnum(TextDecorationStyle.values, string);
 
-Clip? parseClip(String? string) {
-  Clip? rst;
-  Clip.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+Clip? parseClip(String? string) => _parseEnum(Clip.values, string);
 
 ///not an enum
-Curve? parseCurve(String? string) {
-  switch (string) {
-    case "linear":
-      return Curves.linear;
-    case "decelerate":
-      return Curves.decelerate;
-    case "fastLinearToSlowEaseIn":
-      return Curves.fastLinearToSlowEaseIn;
-    case "ease":
-      return Curves.ease;
-    case "easeIn":
-      return Curves.easeIn;
-    case "easeInToLinear":
-      return Curves.easeInToLinear;
-    case "easeInSine":
-      return Curves.easeInSine;
-    case "easeInQuad":
-      return Curves.easeInQuad;
-    case "easeInCubic":
-      return Curves.easeInCubic;
-    case "easeInQuart":
-      return Curves.easeInQuart;
-    case "easeInQuint":
-      return Curves.easeInQuint;
-    case "easeInExpo":
-      return Curves.easeInExpo;
-    case "easeInCirc":
-      return Curves.easeInCirc;
-    case "easeInBack":
-      return Curves.easeInBack;
-    case "easeOut":
-      return Curves.easeOut;
-    case "linearToEaseOut":
-      return Curves.linearToEaseOut;
-    case "easeOutSine":
-      return Curves.easeOutSine;
-    case "easeOutQuad":
-      return Curves.easeOutQuad;
-    case "easeOutCubic":
-      return Curves.easeOutCubic;
-    case "easeOutQuart":
-      return Curves.easeOutQuart;
-    case "easeOutQuint":
-      return Curves.easeOutQuint;
-    case "easeOutExpo":
-      return Curves.easeOutExpo;
-    case "easeOutCirc":
-      return Curves.easeOutCirc;
-    case "easeOutBack":
-      return Curves.easeOutBack;
-    case "easeInOut":
-      return Curves.easeInOut;
-    case "easeInOutSine":
-      return Curves.easeInOutSine;
-    case "easeInOutQuad":
-      return Curves.easeInOutQuad;
-    case "easeInOutCubic":
-      return Curves.easeInOutCubic;
-    case "easeInOutQuart":
-      return Curves.easeInOutQuart;
-    case "easeInOutQuint":
-      return Curves.easeInOutQuint;
-    case "easeInOutExpo":
-      return Curves.easeInOutExpo;
-    case "easeInOutCirc":
-      return Curves.easeInOutCirc;
-    case "easeInOutBack":
-      return Curves.easeInOutBack;
-    case "fastOutSlowIn":
-      return Curves.fastOutSlowIn;
-    case "slowMiddle":
-      return Curves.slowMiddle;
-    case "bounceIn":
-      return Curves.bounceIn;
-    case "bounceOut":
-      return Curves.bounceOut;
-    case "bounceInOut":
-      return Curves.bounceInOut;
-    case "elasticIn":
-      return Curves.elasticIn;
-    case "elasticOut":
-      return Curves.elasticOut;
-    case "elasticOut":
-      return Curves.elasticInOut;
-    default:
-      return null;
-  }
-}
+///Only the predefined [Curves] are supported.
+Curve? parseCurve(String? string) => curvesByName[string];
 
-TextOverflow? parseTextOverflow(String? string) {
-  TextOverflow? rst;
-  TextOverflow.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+TextOverflow? parseTextOverflow(String? string) =>
+    _parseEnum(TextOverflow.values, string);
 
-TextDirection? parseTextDirection(String? string) {
-  TextDirection? rst;
-  TextDirection.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+TextDirection? parseTextDirection(String? string) =>
+    _parseEnum(TextDirection.values, string);
 
-TextAlign? parseTextAlign(String? string) {
-  TextAlign? rst;
-  TextAlign.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+TextAlign? parseTextAlign(String? string) =>
+    _parseEnum(TextAlign.values, string);
 
-TextBaseline? parseTextBaseline(String? string) {
-  TextBaseline? rst;
-  TextBaseline.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+TextBaseline? parseTextBaseline(String? string) =>
+    _parseEnum(TextBaseline.values, string);
 
 ///sorta like an enum
+///Parses "w100" to "w900", and other weights in the "FontWeight(450)" format.
 FontWeight? parseFontWeight(String? string) {
-  FontWeight? rst;
-  FontWeight.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
+  if (string == null) return null;
+  for (FontWeight weight in FontWeight.values) {
+    if (weight.toJson() == string) return weight;
+  }
+
+  Match? match = RegExp(r"^FontWeight\((\d+)\)$").firstMatch(string);
+  if (match == null) return null;
+  int value = int.parse(match.group(1)!);
+  //The FontWeight constructor is not public in all supported Flutter
+  //versions. Where it is, lerp creates the exact weight, otherwise the
+  //closest predefined one.
+  return FontWeight.lerp(
+      FontWeight.w100, FontWeight.w900, (value - 100) / (900 - 100));
 }
 
+///Parses a "left,top,right,bottom" string, for example "8,0,8,0".
 EdgeInsetsGeometry? parseEdgeInsetsGeometry(String? string) {
   if (string == null || string.trim() == '') {
     return null;
   }
-  var values = string.split(",");
+  List<String> values = string.split(",");
   return EdgeInsets.only(
       left: double.parse(values[0]),
       top: double.parse(values[1]),
@@ -349,102 +171,39 @@ EdgeInsetsGeometry? parseEdgeInsetsGeometry(String? string) {
       bottom: double.parse(values[3]));
 }
 
-CrossAxisAlignment? parseCrossAxisAlignment(String? string) {
-  CrossAxisAlignment? rst;
-  CrossAxisAlignment.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+CrossAxisAlignment? parseCrossAxisAlignment(String? string) =>
+    _parseEnum(CrossAxisAlignment.values, string);
 
-MainAxisAlignment? parseMainAxisAlignment(String? string) {
-  MainAxisAlignment? rst;
-  MainAxisAlignment.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+MainAxisAlignment? parseMainAxisAlignment(String? string) =>
+    _parseEnum(MainAxisAlignment.values, string);
 
-WrapAlignment? parseWrapAlignment(String? string) {
-  WrapAlignment? rst;
-  WrapAlignment.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+WrapAlignment? parseWrapAlignment(String? string) =>
+    _parseEnum(WrapAlignment.values, string);
 
-WrapCrossAlignment? parseWrapCrossAlignment(String? string) {
-  WrapCrossAlignment? rst;
-  WrapCrossAlignment.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+WrapCrossAlignment? parseWrapCrossAlignment(String? string) =>
+    _parseEnum(WrapCrossAlignment.values, string);
 
-MainAxisSize? parseMainAxisSize(String? string) {
-  MainAxisSize? rst;
-  MainAxisSize.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+MainAxisSize? parseMainAxisSize(String? string) =>
+    _parseEnum(MainAxisSize.values, string);
 
-VerticalDirection? parseVerticalDirection(String? string) {
-  VerticalDirection? rst;
-  VerticalDirection.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+VerticalDirection? parseVerticalDirection(String? string) =>
+    _parseEnum(VerticalDirection.values, string);
 
-BorderStyle? parseBorderStyle(String? string) {
-  BorderStyle? rst;
-  BorderStyle.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+BorderStyle? parseBorderStyle(String? string) =>
+    _parseEnum(BorderStyle.values, string);
 
-StrokeJoin? parseStrokeJoin(String? string) {
-  StrokeJoin? rst;
-  StrokeJoin.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+StrokeJoin? parseStrokeJoin(String? string) =>
+    _parseEnum(StrokeJoin.values, string);
 
-StrokeCap? parseStrokeCap(String? string) {
-  StrokeCap? rst;
-  StrokeCap.values.forEach((element) {
-    if (string == element.toJson()) {
-      rst = element;
-    }
-  });
-  return rst;
-}
+StrokeCap? parseStrokeCap(String? string) =>
+    _parseEnum(StrokeCap.values, string);
 
 ///Up till this point all parsing should be 1 level. Directly parsing a string.
 
 Radius? parseRadius(Map<String, dynamic>? map) {
   if (map == null) return null;
-  double x = map["x"].toDouble();
-  double y = map["y"].toDouble();
+  double x = _toDouble(map["x"]) ?? 0.0;
+  double y = _toDouble(map["y"]) ?? 0.0;
   return Radius.elliptical(x, y);
 }
 
@@ -464,117 +223,44 @@ BorderRadius? parseBorderRadius(Map<String, dynamic>? map) {
 
 Matrix4? parseMatrix4(dynamic list) {
   if (list == null) return null;
-  List<double> storage = (list as List).cast<double>();
+  List<double> storage = [
+    for (dynamic value in list as List) (value as num).toDouble(),
+  ];
   return Matrix4.fromList(storage);
 }
 
-SystemMouseCursor? parseSystemMouseCursor(String? string) {
-  if (string == "basic") {
-    return SystemMouseCursors.basic;
-  } else if (string == "click") {
-    return SystemMouseCursors.click;
-  } else if (string == "none") {
-    return SystemMouseCursors.none;
-  } else if (string == "forbidden") {
-    return SystemMouseCursors.forbidden;
-  } else if (string == "wait") {
-    return SystemMouseCursors.wait;
-  } else if (string == "progress") {
-    return SystemMouseCursors.progress;
-  } else if (string == "contextMenu") {
-    return SystemMouseCursors.contextMenu;
-  } else if (string == "help") {
-    return SystemMouseCursors.help;
-  } else if (string == "text") {
-    return SystemMouseCursors.text;
-  } else if (string == "verticalText") {
-    return SystemMouseCursors.verticalText;
-  } else if (string == "cell") {
-    return SystemMouseCursors.cell;
-  } else if (string == "precise") {
-    return SystemMouseCursors.precise;
-  } else if (string == "move") {
-    return SystemMouseCursors.move;
-  } else if (string == "grab") {
-    return SystemMouseCursors.grab;
-  } else if (string == "grabbing") {
-    return SystemMouseCursors.grabbing;
-  } else if (string == "noDrop") {
-    return SystemMouseCursors.noDrop;
-  } else if (string == "alias") {
-    return SystemMouseCursors.alias;
-  } else if (string == "copy") {
-    return SystemMouseCursors.copy;
-  } else if (string == "disappearing") {
-    return SystemMouseCursors.disappearing;
-  } else if (string == "allScroll") {
-    return SystemMouseCursors.allScroll;
-  } else if (string == "resizeLeftRight") {
-    return SystemMouseCursors.resizeLeftRight;
-  } else if (string == "resizeUpDown") {
-    return SystemMouseCursors.resizeUpDown;
-  } else if (string == "resizeUpLeftDownRight") {
-    return SystemMouseCursors.resizeUpLeftDownRight;
-  } else if (string == "resizeUpRightDownLeft") {
-    return SystemMouseCursors.resizeUpRightDownLeft;
-  } else if (string == "resizeUp") {
-    return SystemMouseCursors.resizeUp;
-  } else if (string == "resizeDown") {
-    return SystemMouseCursors.resizeDown;
-  } else if (string == "resizeLeft") {
-    return SystemMouseCursors.resizeLeft;
-  } else if (string == "resizeRight") {
-    return SystemMouseCursors.resizeRight;
-  } else if (string == "resizeUpLeft") {
-    return SystemMouseCursors.resizeUpLeft;
-  } else if (string == "resizeUpRight") {
-    return SystemMouseCursors.resizeUpRight;
-  } else if (string == "resizeDownLeft") {
-    return SystemMouseCursors.resizeDownLeft;
-  } else if (string == "resizeDownRight") {
-    return SystemMouseCursors.resizeDownRight;
-  } else if (string == "resizeColumn") {
-    return SystemMouseCursors.resizeColumn;
-  } else if (string == "resizeRow") {
-    return SystemMouseCursors.resizeRow;
-  } else if (string == "zoomIn") {
-    return SystemMouseCursors.zoomIn;
-  } else if (string == "zoomOut") {
-    return SystemMouseCursors.zoomOut;
-  } else {
-    return null;
-  }
-}
+SystemMouseCursor? parseSystemMouseCursor(String? string) =>
+    systemMouseCursorsByName[string];
 
 Offset? parseOffset(Map<String, dynamic>? map) {
   if (map == null) return null;
-  double dx = map["dx"].toDouble();
-  double dy = map["dy"].toDouble();
+  double dx = _toDouble(map["dx"]) ?? 0.0;
+  double dy = _toDouble(map["dy"]) ?? 0.0;
   return Offset(dx, dy);
 }
 
 Size? parseSize(Map<String, dynamic>? map) {
   if (map == null) return null;
-  double width = map["width"].toDouble();
-  double height = map["height"].toDouble();
+  double width = _toDouble(map["width"]) ?? 0.0;
+  double height = _toDouble(map["height"]) ?? 0.0;
   return Size(width, height);
 }
 
 Rect? parseRect(Map<String, dynamic>? map) {
   if (map == null) return null;
-  double left = map["left"].toDouble();
-  double right = map["right"].toDouble();
-  double top = map["top"].toDouble();
-  double bottom = map["bottom"].toDouble();
+  double left = _toDouble(map["left"]) ?? 0.0;
+  double right = _toDouble(map["right"]) ?? 0.0;
+  double top = _toDouble(map["top"]) ?? 0.0;
+  double bottom = _toDouble(map["bottom"]) ?? 0.0;
   return Rect.fromLTRB(left, top, right, bottom);
 }
 
 EdgeInsets? parseEdgeInsets(Map<String, dynamic>? map) {
   if (map == null) return null;
-  double left = map["left"].toDouble();
-  double right = map["right"].toDouble();
-  double top = map["top"].toDouble();
-  double bottom = map["bottom"].toDouble();
+  double left = _toDouble(map["left"]) ?? 0.0;
+  double right = _toDouble(map["right"]) ?? 0.0;
+  double top = _toDouble(map["top"]) ?? 0.0;
+  double bottom = _toDouble(map["bottom"]) ?? 0.0;
   return EdgeInsets.only(left: left, top: top, right: right, bottom: bottom);
 }
 
@@ -582,9 +268,16 @@ ImageFilter? parseImageFilter(Map<String, dynamic>? map) {
   if (map == null) return null;
   if (map["type"] == "ImageFilter") {
     if (map.containsKey("sigmaX")) {
+      double sigmaX = _toDouble(map["sigmaX"]) ?? 0;
+      double sigmaY = _toDouble(map["sigmaY"]) ?? 0;
+      //A blur created without a tile mode uses a platform specific default
+      //since Flutter 3.29.
+      if (map["tileMode"] == "unspecified") {
+        return ImageFilter.blur(sigmaX: sigmaX, sigmaY: sigmaY);
+      }
       return ImageFilter.blur(
-          sigmaX: map["sigmaX"]?.toDouble() ?? 0,
-          sigmaY: map["sigmaY"]?.toDouble() ?? 0,
+          sigmaX: sigmaX,
+          sigmaY: sigmaY,
           tileMode: parseTileMode(map["tileMode"]) ?? TileMode.clamp);
     }
   }
@@ -594,8 +287,16 @@ ImageFilter? parseImageFilter(Map<String, dynamic>? map) {
   return null;
 }
 
+///Returns null for an empty map, which is what [ColorFilterToJsonExtension]
+///returns for filters it can't serialize.
 ColorFilter? parseColorFilter(Map<String, dynamic>? map) {
   if (map == null) return null;
+  List? matrix = map["matrix"];
+  if (matrix != null) {
+    return ColorFilter.matrix(
+        [for (dynamic value in matrix) (value as num).toDouble()]);
+  }
+  if (!map.containsKey("color") && !map.containsKey("mode")) return null;
   Color color = parseColor(map["color"]) ?? const Color(0x00000000);
   BlendMode mode = parseBlendMode(map["mode"]) ?? BlendMode.src;
   return ColorFilter.mode(color, mode);
@@ -605,7 +306,7 @@ ColorFilter? parseColorFilter(Map<String, dynamic>? map) {
 ImageProvider? parseImageProvider(Map<String, dynamic>? map) {
   if (map == null) return null;
   if (map["type"] == "NetworkImage") {
-    return NetworkImage(map["url"], scale: map["scale"]);
+    return NetworkImage(map["url"], scale: _toDouble(map["scale"]) ?? 1.0);
   }
   if (map["type"] == "AssetImage") {
     return AssetImage(map["assetName"], package: map["package"]);
@@ -620,7 +321,7 @@ DecorationImage? parseDecorationImage(Map<String, dynamic>? map) {
   BoxFit? fit = parseBoxFit(map["fit"]);
   Alignment alignment = parseAlignment(map["alignment"]) ?? Alignment.center;
   ImageRepeat repeat = parseImageRepeat(map["repeat"]) ?? ImageRepeat.noRepeat;
-  double scale = (map["scale"] ?? 1.0).toDouble();
+  double scale = _toDouble(map["scale"]) ?? 1.0;
 
   if (image == null) return null;
   return DecorationImage(
@@ -636,22 +337,24 @@ Shadow? parseShadow(Map<String, dynamic>? map) {
   if (map == null) return null;
   Color color = parseColor(map["color"]) ?? const Color(0x00000000);
   Offset offset = parseOffset(map["offset"]) ?? Offset.zero;
-  double blurRadius = (map["blurRadius"] ?? 0.0).toDouble();
+  double blurRadius = _toDouble(map["blurRadius"]) ?? 0.0;
 
   return Shadow(color: color, offset: offset, blurRadius: blurRadius);
 }
 
+///Missing values default to the defaults of the gradient constructors.
 Gradient? parseGradient(Map<String, dynamic>? map) {
   if (map == null) return null;
-  List<Color> colors = (map["colors"] as List)
-      .map((e) => parseColor(e) ?? const Color(0xFFFFFFFF))
-      .toList();
+  List<Color> colors = [
+    for (dynamic color in map["colors"] as List)
+      parseColor(color) ?? const Color(0xFFFFFFFF),
+  ];
   List<double>? stops =
-      (map["stops"] as List?)?.map((e) => e.toDouble()).toList().cast<double>();
+      (map["stops"] as List?)?.map((e) => (e as num).toDouble()).toList();
   TileMode tileMode = parseTileMode(map["tileMode"]) ?? TileMode.clamp;
   if (map["type"] == "RadialGradient") {
     Alignment center = parseAlignment(map["center"]) ?? Alignment.center;
-    double radius = map["radius"].toDouble();
+    double radius = _toDouble(map["radius"]) ?? 0.5;
     return RadialGradient(
         center: center,
         radius: radius,
@@ -660,8 +363,8 @@ Gradient? parseGradient(Map<String, dynamic>? map) {
         tileMode: tileMode);
   } else if (map["type"] == "SweepGradient") {
     Alignment center = parseAlignment(map["center"]) ?? Alignment.center;
-    double startAngle = map["startAngle"].toDouble();
-    double endAngle = map["endAngle"].toDouble();
+    double startAngle = _toDouble(map["startAngle"]) ?? 0.0;
+    double endAngle = _toDouble(map["endAngle"]) ?? math.pi * 2;
     return SweepGradient(
         center: center,
         startAngle: startAngle,
@@ -689,13 +392,14 @@ BoxDecoration? parseBoxDecoration(Map<String, dynamic>? map) {
   return BoxDecoration(color: color, gradient: gradient, image: image);
 }
 
+///Parses the properties written by [TextStyleToJsonExtension]. A missing
+///font style is parsed as [FontStyle.normal].
 TextStyle? parseTextStyle(Map<String, dynamic>? map) {
   if (map == null) return null;
-  //TODO: more properties need to be implemented, such as decoration, decorationColor, decorationStyle, wordSpacing and so on.
   Color? color = parseColor(map['color']);
   Color? backgroundColor = parseColor(map['backgroundColor']);
   String? fontFamily = map['fontFamily'];
-  double? fontSize = map['fontSize']?.toDouble();
+  double? fontSize = _toDouble(map['fontSize']);
   FontStyle? fontStyle =
       'italic' == map['fontStyle'] ? FontStyle.italic : FontStyle.normal;
   FontWeight? fontWeight = parseFontWeight(map['fontWeight']);
@@ -703,13 +407,17 @@ TextStyle? parseTextStyle(Map<String, dynamic>? map) {
   Color? decorationColor = parseColor(map["decorationColor"]);
   TextDecorationStyle? decorationStyle =
       parseTextDecorationStyle(map['decorationStyle']);
-  double? decorationThickness = map['decorationThickness']?.toDouble();
-  double? height = map['height']?.toDouble();
-  double? letterSpacing = map['letterSpacing']?.toDouble();
+  double? decorationThickness = _toDouble(map['decorationThickness']);
+  double? height = _toDouble(map['height']);
+  double? letterSpacing = _toDouble(map['letterSpacing']);
+  double? wordSpacing = _toDouble(map['wordSpacing']);
+  TextBaseline? textBaseline = parseTextBaseline(map['textBaseline']);
 
   return TextStyle(
     height: height,
     letterSpacing: letterSpacing,
+    wordSpacing: wordSpacing,
+    textBaseline: textBaseline,
     color: color,
     backgroundColor: backgroundColor,
     fontSize: fontSize,

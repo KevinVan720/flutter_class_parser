@@ -2,7 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_class_parser/flutter_class_parser.dart';
+
+import 'named_values.dart';
+import 'parse_json.dart';
 
 ///Convert various built-in UI data classes to string or a map
 ///Methods are all called toJson() for simplification
@@ -21,423 +23,228 @@ extension MapToJsonTypeExtension<K, V> on Map<K, V> {
 
 extension ColorToJson on Color {
   String toJson() {
-    return this.toARGB32().toRadixString(16);
+    return toARGB32().toRadixString(16);
   }
 }
 
 extension OrientationToJson on Orientation {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension BlendModeToJson on BlendMode {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension TileModeToJson on TileMode {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension AlignmentToJson on Alignment {
+  ///The predefined alignments are serialized by name, for example "topLeft",
+  ///others as "(x, y)", for example "(0.1, 0.2)".
   String toJson() {
-    if (!this.toString().contains("(")) {
-      return this.toString().stripFirstDot();
-    } else {
-      return this.toString().substring(9);
-    }
+    return switch ((x, y)) {
+      (-1.0, -1.0) => "topLeft",
+      (0.0, -1.0) => "topCenter",
+      (1.0, -1.0) => "topRight",
+      (-1.0, 0.0) => "centerLeft",
+      (0.0, 0.0) => "center",
+      (1.0, 0.0) => "centerRight",
+      (-1.0, 1.0) => "bottomLeft",
+      (0.0, 1.0) => "bottomCenter",
+      (1.0, 1.0) => "bottomRight",
+      _ => "(${_alignmentComponentToJson(x)}, ${_alignmentComponentToJson(y)})",
+    };
   }
+}
+
+///Formats a value with one decimal like [Alignment.toString] does, so the
+///output stays the same as in older versions, unless that would lose
+///precision.
+String _alignmentComponentToJson(double value) {
+  String fixed = value.toStringAsFixed(1);
+  return double.parse(fixed) == value ? fixed : value.toString();
 }
 
 extension BoxFitToJson on BoxFit {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension ImageRepeatToJson on ImageRepeat {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension FilterQualityToJson on FilterQuality {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension StackFitToJson on StackFit {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension FontWeightToJson on FontWeight {
+  ///The predefined weights are serialized as "w100" to "w900", other
+  ///weights (supported by variable fonts) as for example "FontWeight(450)".
+  ///Like [FontWeight.toString], FontWeight(1000) is serialized as "w900".
   String toJson() {
-    return this.toString().stripFirstDot();
+    if (value % 100 != 0) return "FontWeight($value)";
+    return "w${(value ~/ 100).clamp(1, 9) * 100}";
   }
 }
 
 extension FontStyleToJson on FontStyle {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension AxisToJson on Axis {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension AxisDirectionToJson on AxisDirection {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension TextOverflowToJson on TextOverflow {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension TextDecorationToJson on TextDecoration {
+  ///A single decoration is serialized by name, for example "underline",
+  ///a combined one as for example "combine([underline, lineThrough])".
   String toJson() {
-    return this.toString().stripFirstDot();
+    List<String> names = [
+      for (MapEntry<String, TextDecoration> entry
+          in textDecorationsByName.entries)
+        if (contains(entry.value)) entry.key,
+    ];
+    if (names.isEmpty) return "none";
+    if (names.length == 1) return names.single;
+    return "combine([${names.join(", ")}])";
   }
 }
 
 extension TextDirectionToJson on TextDirection {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension TextDecorationStyleToJson on TextDecorationStyle {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension ClipToJson on Clip {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension CurveToJson on Curve {
+  ///Only the predefined [Curves] are supported, other curves are serialized
+  ///as an empty string.
   String toJson() {
-    switch (this) {
-      case Curves.linear:
-        return "linear";
-      case Curves.decelerate:
-        return "decelerate";
-      case Curves.fastLinearToSlowEaseIn:
-        return "fastLinearToSlowEaseIn";
-      case Curves.ease:
-        return "ease";
-      case Curves.easeIn:
-        return "easeIn";
-      case Curves.easeInToLinear:
-        return "easeInToLinear";
-      case Curves.easeInSine:
-        return "easeInSine";
-      case Curves.easeInQuad:
-        return "easeInQuad";
-      case Curves.easeInCubic:
-        return "easeInCubic";
-      case Curves.easeInQuart:
-        return "easeInQuart";
-      case Curves.easeInQuint:
-        return "easeInQuint";
-      case Curves.easeInExpo:
-        return "easeInExpo";
-      case Curves.easeInCirc:
-        return "easeInCirc";
-      case Curves.easeInBack:
-        return "easeInBack";
-      case Curves.easeOut:
-        return "easeOut";
-      case Curves.linearToEaseOut:
-        return "linearToEaseOut";
-      case Curves.easeOutSine:
-        return "easeOutSine";
-      case Curves.easeOutQuad:
-        return "easeOutQuad";
-      case Curves.easeOutCubic:
-        return "easeOutCubic";
-      case Curves.easeOutQuart:
-        return "easeOutQuart";
-      case Curves.easeOutQuint:
-        return "easeOutQuint";
-      case Curves.easeOutExpo:
-        return "easeOutExpo";
-      case Curves.easeOutCirc:
-        return "easeOutCirc";
-      case Curves.easeOutBack:
-        return "easeOutBack";
-      case Curves.easeInOut:
-        return "easeInOut";
-      case Curves.easeInOutSine:
-        return "easeInOutSine";
-      case Curves.easeInOutQuad:
-        return "easeInOutQuad";
-      case Curves.easeInOutCubic:
-        return "easeInOutCubic";
-      case Curves.easeInOutQuart:
-        return "easeInOutQuart";
-      case Curves.easeInOutQuint:
-        return "easeInOutQuint";
-      case Curves.easeInOutExpo:
-        return "easeInOutExpo";
-      case Curves.easeInOutCirc:
-        return "easeInOutCirc";
-      case Curves.easeInOutBack:
-        return "easeInOutBack";
-      case Curves.fastOutSlowIn:
-        return "fastOutSlowIn";
-      case Curves.slowMiddle:
-        return "slowMiddle";
-      case Curves.bounceIn:
-        return "bounceIn";
-      case Curves.bounceOut:
-        return "bounceOut";
-      case Curves.bounceInOut:
-        return "bounceInOut";
-      case Curves.elasticIn:
-        return "elasticIn";
-      case Curves.elasticOut:
-        return "elasticOut";
-      case Curves.elasticInOut:
-        return "elasticOut";
-      default:
-        return "";
+    for (MapEntry<String, Curve> entry in curvesByName.entries) {
+      if (entry.value == this) return entry.key;
     }
+    return "";
   }
 }
 
 extension TextAlignToJson on TextAlign {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension MainAxisAlignmentToJson on MainAxisAlignment {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension CrossAxisAlignmentToJson on CrossAxisAlignment {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension WrapAlignmentToJson on WrapAlignment {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension WrapCrossAlignmentToJson on WrapCrossAlignment {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension MainAxisSizeToJson on MainAxisSize {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension TextBaselineToJson on TextBaseline {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension VerticalDirectionToJson on VerticalDirection {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension BorderStyleToJson on BorderStyle {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension StrokeJoinToJson on StrokeJoin {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension StrokeCapToJson on StrokeCap {
-  String toJson() {
-    return this.toString().stripFirstDot();
-  }
+  String toJson() => name;
 }
 
 extension Matrix4ToJson on Matrix4 {
   List<double> toJson() {
-    return this.storage.toList();
+    return storage.toList();
   }
 }
 
 extension SystemMouseCursorsToJson on SystemMouseCursor {
+  ///Unknown cursors are serialized as an empty string.
   String toJson() {
-    if (this == SystemMouseCursors.basic) {
-      return "basic";
-    } else if (this == SystemMouseCursors.click) {
-      return "click";
-    } else if (this == SystemMouseCursors.none) {
-      return "none";
-    } else if (this == SystemMouseCursors.forbidden) {
-      return "forbidden";
-    } else if (this == SystemMouseCursors.wait) {
-      return "wait";
-    } else if (this == SystemMouseCursors.progress) {
-      return "progress";
-    } else if (this == SystemMouseCursors.contextMenu) {
-      return "contextMenu";
-    } else if (this == SystemMouseCursors.help) {
-      return "help";
-    } else if (this == SystemMouseCursors.text) {
-      return "text";
-    } else if (this == SystemMouseCursors.verticalText) {
-      return "verticalText";
-    } else if (this == SystemMouseCursors.cell) {
-      return "cell";
-    } else if (this == SystemMouseCursors.precise) {
-      return "precise";
-    } else if (this == SystemMouseCursors.move) {
-      return "move";
-    } else if (this == SystemMouseCursors.grab) {
-      return "grab";
-    } else if (this == SystemMouseCursors.grabbing) {
-      return "grabbing";
-    } else if (this == SystemMouseCursors.noDrop) {
-      return "noDrop";
-    } else if (this == SystemMouseCursors.alias) {
-      return "alias";
-    } else if (this == SystemMouseCursors.copy) {
-      return "copy";
-    } else if (this == SystemMouseCursors.disappearing) {
-      return "disappearing";
-    } else if (this == SystemMouseCursors.allScroll) {
-      return "allScroll";
-    } else if (this == SystemMouseCursors.resizeLeftRight) {
-      return "resizeLeftRight";
-    } else if (this == SystemMouseCursors.resizeUpDown) {
-      return "resizeUpDown";
-    } else if (this == SystemMouseCursors.resizeUpLeftDownRight) {
-      return "resizeUpLeftDownRight";
-    } else if (this == SystemMouseCursors.resizeUpRightDownLeft) {
-      return "resizeUpRightDownLeft";
-    } else if (this == SystemMouseCursors.resizeUp) {
-      return "resizeUp";
-    } else if (this == SystemMouseCursors.resizeDown) {
-      return "resizeDown";
-    } else if (this == SystemMouseCursors.resizeLeft) {
-      return "resizeLeft";
-    } else if (this == SystemMouseCursors.resizeRight) {
-      return "resizeRight";
-    } else if (this == SystemMouseCursors.resizeUpLeft) {
-      return "resizeUpLeft";
-    } else if (this == SystemMouseCursors.resizeUpRight) {
-      return "resizeUpRight";
-    } else if (this == SystemMouseCursors.resizeDownLeft) {
-      return "resizeDownLeft";
-    } else if (this == SystemMouseCursors.resizeDownRight) {
-      return "resizeDownRight";
-    } else if (this == SystemMouseCursors.resizeColumn) {
-      return "resizeColumn";
-    } else if (this == SystemMouseCursors.resizeRow) {
-      return "resizeRow";
-    } else if (this == SystemMouseCursors.zoomIn) {
-      return "zoomIn";
-    } else if (this == SystemMouseCursors.zoomOut) {
-      return "zoomOut";
-    } else {
-      return "";
-    }
+    return systemMouseCursorsByName[kind] == this ? kind : "";
   }
 }
 
 extension OffsetToJsonExtension on Offset {
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> rst = {};
-    rst["dx"] = this.dx;
-    rst["dy"] = this.dy;
-    return rst;
+    return {"dx": dx, "dy": dy};
   }
 }
 
 extension SizeToJsonExtension on Size {
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> rst = {};
-    rst["width"] = this.width;
-    rst["height"] = this.height;
-    return rst;
+    return {"width": width, "height": height};
   }
 }
 
 extension RectToJsonExtension on Rect {
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> rst = {};
-    rst["left"] = this.left;
-    rst["right"] = this.right;
-    rst["top"] = this.top;
-    rst["bottom"] = this.bottom;
-    return rst;
+    return {"left": left, "right": right, "top": top, "bottom": bottom};
   }
 }
 
 extension EdgeInsetsToJsonExtension on EdgeInsets {
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> rst = {};
-    rst["left"] = this.left;
-    rst["right"] = this.right;
-    rst["top"] = this.top;
-    rst["bottom"] = this.bottom;
-    return rst;
+    return {"left": left, "right": right, "top": top, "bottom": bottom};
   }
 }
 
 extension RadiusToJsonExtension on Radius {
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> rst = {};
-    rst["x"] = this.x;
-    rst["y"] = this.y;
-    return rst;
+    return {"x": x, "y": y};
   }
 
   static Radius? fromJson(Map<String, dynamic> map) {
-    return Radius.elliptical(
-      map["x"],
-      map["y"],
-    );
+    return parseRadius(map);
   }
 }
 
 extension BorderRadiusToJsonExtension on BorderRadius {
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> rst = {};
-    rst["topLeft"] = this.topLeft.toJson();
-    rst["topRight"] = this.topRight.toJson();
-    rst["bottomLeft"] = this.bottomLeft.toJson();
-    rst["bottomRight"] = this.bottomRight.toJson();
-    return rst;
+    return {
+      "topLeft": topLeft.toJson(),
+      "topRight": topRight.toJson(),
+      "bottomLeft": bottomLeft.toJson(),
+      "bottomRight": bottomRight.toJson(),
+    };
   }
 }
 
@@ -445,28 +252,25 @@ extension GradientToJsonExtension on Gradient {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};
 
-    rst.updateNotNull("stops", this.stops);
-    rst.updateNotNull("colors", this.colors.map((e) => e.toJson()).toList());
-    if (this is LinearGradient) {
+    rst.updateNotNull("stops", stops);
+    rst.updateNotNull("colors", colors.map((e) => e.toJson()).toList());
+    Gradient gradient = this;
+    if (gradient is LinearGradient) {
       rst["type"] = "LinearGradient";
-      rst.updateNotNull(
-          "begin", ((this as LinearGradient).begin as Alignment).toJson());
-      rst.updateNotNull(
-          "end", ((this as LinearGradient).end as Alignment).toJson());
-      rst.updateNotNull("tileMode", (this as LinearGradient).tileMode.toJson());
-    } else if (this is RadialGradient) {
+      rst.updateNotNull("begin", (gradient.begin as Alignment).toJson());
+      rst.updateNotNull("end", (gradient.end as Alignment).toJson());
+      rst.updateNotNull("tileMode", gradient.tileMode.toJson());
+    } else if (gradient is RadialGradient) {
       rst["type"] = "RadialGradient";
-      rst.updateNotNull(
-          "center", ((this as RadialGradient).center as Alignment).toJson());
-      rst.updateNotNull("radius", (this as RadialGradient).radius);
-      rst.updateNotNull("tileMode", (this as RadialGradient).tileMode.toJson());
-    } else if (this is SweepGradient) {
+      rst.updateNotNull("center", (gradient.center as Alignment).toJson());
+      rst.updateNotNull("radius", gradient.radius);
+      rst.updateNotNull("tileMode", gradient.tileMode.toJson());
+    } else if (gradient is SweepGradient) {
       rst["type"] = "SweepGradient";
-      rst.updateNotNull(
-          "center", ((this as SweepGradient).center as Alignment).toJson());
-      rst.updateNotNull("startAngle", (this as SweepGradient).startAngle);
-      rst.updateNotNull("endAngle", (this as SweepGradient).endAngle);
-      rst.updateNotNull("tileMode", (this as SweepGradient).tileMode.toJson());
+      rst.updateNotNull("center", (gradient.center as Alignment).toJson());
+      rst.updateNotNull("startAngle", gradient.startAngle);
+      rst.updateNotNull("endAngle", gradient.endAngle);
+      rst.updateNotNull("tileMode", gradient.tileMode.toJson());
     }
 
     return rst;
@@ -474,83 +278,94 @@ extension GradientToJsonExtension on Gradient {
 }
 
 extension ImageFilterToJson on ImageFilter {
+  ///Supports blur filters and the color filters supported by
+  ///[ColorFilterToJsonExtension], other filters are serialized as an empty
+  ///map.
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> rst = {};
-    String temp = this.toString();
-    if (temp.contains("ImageFilter.blur")) {
-      List<String> data = temp
-          .substring(temp.indexOf("(") + 1, temp.lastIndexOf((")")))
-          .split(",");
-      rst["sigmaX"] = double.tryParse(data[0]) ?? 0;
-      rst["sigmaY"] = double.tryParse(data[1]) ?? 0;
-      rst["tileMode"] = data[2].trim();
-      rst["type"] = "ImageFilter";
-      return rst;
-    }
-    if (temp.contains("ColorFilter.mode")) {
-      rst = (this as ColorFilter).toJson();
-    }
-    return rst;
+    ImageFilter filter = this;
+    if (filter is ColorFilter) return filter.toJson();
+
+    ///The blur parameters are private, so they are read from toString(),
+    ///for example "ImageFilter.blur(2.0, 3.0, clamp)".
+    Match? blur =
+        RegExp(r"^ImageFilter\.blur\(\s*([^,\s]+)\s*,\s*([^,\s]+)\s*,\s*(\w+)")
+            .firstMatch(toString());
+    if (blur == null) return {};
+    return {
+      "sigmaX": double.tryParse(blur.group(1)!) ?? 0,
+      "sigmaY": double.tryParse(blur.group(2)!) ?? 0,
+      "tileMode": blur.group(3),
+      "type": "ImageFilter",
+    };
   }
 }
 
 extension ColorFilterToJsonExtension on ColorFilter {
+  ///Supports [ColorFilter.mode] and [ColorFilter.matrix] filters, other
+  ///filters are serialized as an empty map.
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> rst = {};
-    String temp = this.toString();
+    ///The filter parameters are private, so they are read from toString(),
+    ///for example "ColorFilter.mode(Color(...), BlendMode.srcOver)".
+    String string = toString();
 
-    ///assume color filter is in mode type
-    ///can not get _matrix, only parse the mode type
-    if (temp.startsWith("ColorFilter.mode(")) {
-      String? colorString = _colorStringFromDebugString(temp);
-      Match? mode = RegExp(r"BlendMode\.(\w+)").firstMatch(temp);
-      if (colorString != null && mode != null) {
-        rst["color"] = colorString;
-        rst["mode"] = mode.group(1);
-        rst["type"] = "ColorFilter";
+    if (string.startsWith("ColorFilter.mode(")) {
+      String? color = _colorStringFromDebugString(string);
+      Match? mode = RegExp(r"BlendMode\.(\w+)").firstMatch(string);
+      if (color != null && mode != null) {
+        return {"color": color, "mode": mode.group(1), "type": "ColorFilter"};
+      }
+    } else if (string.startsWith("ColorFilter.matrix(")) {
+      Match? values = RegExp(r"\[([^\]]*)\]").firstMatch(string);
+      List<double?>? matrix =
+          values?.group(1)!.split(",").map(double.tryParse).toList();
+      if (matrix != null && matrix.length == 20 && !matrix.contains(null)) {
+        return {"matrix": matrix.cast<double>(), "type": "ColorFilter"};
       }
     }
 
-    return rst;
+    return {};
   }
 }
 
-///Extract a color (in the same format as [ColorToJson.toJson]) from the
-///toString() output of a class that contains a [Color].
+///Extracts a color from the toString() output of a class that contains a
+///[Color]. The color is formatted as eight hex digits, like older versions of
+///this package did.
 ///Supports both the legacy "Color(0xff2196f3)" format and the
 ///"Color(alpha: 1.0000, red: 0.1294, ...)" format used since Flutter 3.27.
 String? _colorStringFromDebugString(String string) {
+  int? argb;
   Match? hex = RegExp(r"\(0x([0-9a-fA-F]{1,8})\)").firstMatch(string);
-  if (hex != null) {
-    return int.parse(hex.group(1)!, radix: 16).toRadixString(16);
-  }
   Match? channels = RegExp(
           r"alpha: (-?[\d.]+), red: (-?[\d.]+), green: (-?[\d.]+), blue: (-?[\d.]+)")
       .firstMatch(string);
-  if (channels != null) {
+  if (hex != null) {
+    argb = int.parse(hex.group(1)!, radix: 16);
+  } else if (channels != null) {
     int toInt8(String value) =>
         (double.parse(value) * 255.0).round().clamp(0, 255);
-    int argb = toInt8(channels.group(1)!) << 24 |
+    argb = toInt8(channels.group(1)!) << 24 |
         toInt8(channels.group(2)!) << 16 |
         toInt8(channels.group(3)!) << 8 |
         toInt8(channels.group(4)!);
-    return argb.toRadixString(16);
   }
-  return null;
+  return argb?.toRadixString(16).padLeft(8, "0");
 }
 
 extension ImageProviderToJsonExtension on ImageProvider {
+  ///Supports [NetworkImage] and [AssetImage], other providers are serialized
+  ///as an empty map.
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};
-    if (this is NetworkImage) {
+    ImageProvider image = this;
+    if (image is NetworkImage) {
       rst["type"] = "NetworkImage";
-      rst["url"] = (this as NetworkImage).url;
-      rst["scale"] = (this as NetworkImage).scale;
+      rst["url"] = image.url;
+      rst["scale"] = image.scale;
     }
-    if (this is AssetImage) {
+    if (image is AssetImage) {
       rst["type"] = "AssetImage";
-      rst["assetName"] = (this as AssetImage).assetName;
-      rst["package"] = (this as AssetImage).package;
+      rst["assetName"] = image.assetName;
+      rst["package"] = image.package;
     }
     return rst;
   }
@@ -558,22 +373,22 @@ extension ImageProviderToJsonExtension on ImageProvider {
 
 extension ShadowToJsonExtension on Shadow {
   Map<String, dynamic> toJson() {
-    Map<String, dynamic> rst = {};
-    rst.updateNotNull("color", color.toJson());
-    rst.updateNotNull("offset", offset.toJson());
-    rst.updateNotNull("blurRadius", blurRadius);
-    return rst;
+    return {
+      "color": color.toJson(),
+      "offset": offset.toJson(),
+      "blurRadius": blurRadius,
+    };
   }
 }
 
 extension DecorationImageToJsonExtension on DecorationImage {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};
-    rst.updateNotNull("image", this.image.toJson());
-    rst.updateNotNull("colorFilter", this.colorFilter?.toJson());
-    rst.updateNotNull("fit", this.fit?.toJson());
-    rst.updateNotNull("alignment", (this.alignment as Alignment).toJson());
-    rst.updateNotNull("repeat", this.repeat.toJson());
+    rst.updateNotNull("image", image.toJson());
+    rst.updateNotNull("colorFilter", colorFilter?.toJson());
+    rst.updateNotNull("fit", fit?.toJson());
+    rst.updateNotNull("alignment", (alignment as Alignment).toJson());
+    rst.updateNotNull("repeat", repeat.toJson());
     rst.updateNotNull("scale", scale);
 
     return rst;
@@ -583,9 +398,9 @@ extension DecorationImageToJsonExtension on DecorationImage {
 extension BoxDecorationToJsonExtension on BoxDecoration {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};
-    rst.updateNotNull("color", this.color?.toJson());
-    rst.updateNotNull("gradient", this.gradient?.toJson());
-    rst.updateNotNull("image", this.image?.toJson());
+    rst.updateNotNull("color", color?.toJson());
+    rst.updateNotNull("gradient", gradient?.toJson());
+    rst.updateNotNull("image", image?.toJson());
     return rst;
   }
 }
@@ -593,20 +408,20 @@ extension BoxDecorationToJsonExtension on BoxDecoration {
 extension TextStyleToJsonExtension on TextStyle {
   Map<String, dynamic> toJson() {
     Map<String, dynamic> rst = {};
-    rst.updateNotNull("color", this.color?.toJson());
-    rst.updateNotNull("backgroundColor", this.backgroundColor?.toJson());
-    rst.updateNotNull("fontSize", this.fontSize);
-    rst.updateNotNull("fontWeight", this.fontWeight?.toJson());
-    rst.updateNotNull("fontStyle", this.fontStyle?.toJson());
-    rst.updateNotNull("letterSpacing", this.letterSpacing);
-    rst.updateNotNull("wordSpacing", this.wordSpacing);
-    rst.updateNotNull("textBaseline", this.textBaseline?.toJson());
-    rst.updateNotNull("height", this.height);
-    rst.updateNotNull("decoration", this.decoration?.toJson());
-    rst.updateNotNull("decorationColor", this.decorationColor?.toJson());
-    rst.updateNotNull("decorationStyle", this.decorationStyle?.toJson());
-    rst.updateNotNull("decorationThickness", this.decorationThickness);
-    rst.updateNotNull("fontFamily", this.fontFamily);
+    rst.updateNotNull("color", color?.toJson());
+    rst.updateNotNull("backgroundColor", backgroundColor?.toJson());
+    rst.updateNotNull("fontSize", fontSize);
+    rst.updateNotNull("fontWeight", fontWeight?.toJson());
+    rst.updateNotNull("fontStyle", fontStyle?.toJson());
+    rst.updateNotNull("letterSpacing", letterSpacing);
+    rst.updateNotNull("wordSpacing", wordSpacing);
+    rst.updateNotNull("textBaseline", textBaseline?.toJson());
+    rst.updateNotNull("height", height);
+    rst.updateNotNull("decoration", decoration?.toJson());
+    rst.updateNotNull("decorationColor", decorationColor?.toJson());
+    rst.updateNotNull("decorationStyle", decorationStyle?.toJson());
+    rst.updateNotNull("decorationThickness", decorationThickness);
+    rst.updateNotNull("fontFamily", fontFamily);
 
     return rst;
   }
